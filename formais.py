@@ -1,21 +1,19 @@
+#user.py
 class Variable():
-    
-    def __init__(self):
-        mainVar = None
-        varsTerms = None
-        totalmenteVisitado = None
-        estado = None
-        
+    mainVar = None
+    varsTerms = None
+    totalmenteVisitado = None
+    estado = None
+
     def __init__(self,mainVar, varsTerms, estado):
-            
         self.setMainVar(mainVar)
         self.varsTerms = varsTerms
         self.totalmenteVisitado = False
         self.estado = estado
-  
+
     def setMainVar(self,mainVar):
         self.mainVar = mainVar
-
+        
     def getMainVar(self):
         return self.mainVar
 
@@ -36,11 +34,12 @@ class Variable():
 
     def getEstado(self):
         return self.estado
-    
 
 if __name__ == '__main__':
-  a = Variable("mainVar",5,'desligado')
-  print(a.getMainVar())
-  print(a.getTotalmenteVisitado())
-  print(a.getVarsTerms())
-  print(a.getEstado())
+    a = Variable("Exemplo de mainVar",5,'Exemplo de estado: desligado')
+    print(a.getMainVar())
+    print(a.getTotalmenteVisitado())
+    print(a.getVarsTerms())
+    print(a.getEstado())
+    
+    
