@@ -1,22 +1,46 @@
-class Variable:
-        
-	mainVar = None
-	varsTerms = None
-	totalmenteVisitado = None
-	estado = None
-    # mainVar = variavel da esquerda
-    # varsTerms = lista de tuplas [("V", "var"),("*", "ponto") ("R","var"), ("oi","term")]
+class Variable():
     
-    def __init__(mainVar, varsTerms, estado):
+    def __init__(self):
+        mainVar = None
+        varsTerms = None
+        totalmenteVisitado = None
+        estado = None
+        
+    def __init__(self,mainVar, varsTerms, estado):
             
-            self.mainVar = mainVar
-            self.varsTerms = varsTerms
-            self.totalmenteVisitado = False
-            self.estado = estado
+        self.setMainVar(mainVar)
+        self.varsTerms = varsTerms
+        self.totalmenteVisitado = False
+        self.estado = estado
+  
+    def setMainVar(self,mainVar):
+        self.mainVar = mainVar
 
-            
-          
-    def setmainVar(self,mainVar):
-            self.mainVar = mainVar
+    def getMainVar(self):
+        return self.mainVar
+
+    def setVarsTerms(self,varsTerms):
+        self.varsTerms = varsTerms
+
+    def getVarsTerms(self):
+        return self.varsTerms
+
+    def setTotalmenteVisitado(self,totalmenteVisitado):
+        self.varsTerms = totalmenteVisitado
+
+    def getTotalmenteVisitado(self):
+        return self.totalmenteVisitado
+
+    def setEstado(self,estado):
+        self.estado = estado
+
+    def getEstado(self):
+        return self.estado
     
-        
+
+if __name__ == '__main__':
+  a = Variable("mainVar",5,'desligado')
+  print(a.getMainVar())
+  print(a.getTotalmenteVisitado())
+  print(a.getVarsTerms())
+  print(a.getEstado())
