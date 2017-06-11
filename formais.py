@@ -89,11 +89,21 @@ class Terminal():
     def getClass(self):
         return "Terminal"
 
-def looping(P):
-    if(P.getClass() == "Terminal"):
-        print(P.getValue())
-    if (P.getClass() == "Variable"):
-        terms = P.getRandomThing()
+def firstLooping(firstSymbol, variables):
+    for variable in variables:
+        if variable.getValue() == firstSymbol:
+            if(variable.getClass() == "Terminal"):
+                print(variable.getValue())
+            if (variable.getClass() == "Variable"):
+                terms = variable.getRandomThing()
+                for term in terms:
+                    looping(term)
+
+def looping(variable):
+    if(variable.getClass() == "Terminal"):
+        print(variable.getValue())
+    if (variable.getClass() == "Variable"):
+        terms = variable.getRandomThing()
         for term in terms:
             looping(term)
 
@@ -105,7 +115,9 @@ def readerFile():
     rows = file_.read().split('\n')
     readingWhat = "Nothing"
     for row in rows:
+        # Se a linha começar com [ eu já sei que é o inicio de uma Variavel ou Terminal
         if row[0] == "[":
+            # Se estiver na parte de Terminais, Variaveis ou Inicial seta para as 2 listas e a variavel.
             if readingWhat == "Terminais":
                 tempRow = row.split(' ')
                 terminals.append(Terminal(tempRow[1],"Masc","Sing"))
@@ -115,6 +127,7 @@ def readerFile():
             elif readingWhat == "Inicial":
                 tempRow = row.split(' ')
                 firstSymbol = tempRow[1]
+            # Se estiver na aba Regras, modifica a entrada para facilitar a leitura
             elif readingWhat == "Regras":
                 row = row.replace(' ','')
                 row = row.replace('[',' ')
@@ -123,15 +136,13 @@ def readerFile():
                 tempRow = row.split(' ')
                 index = 0
                 for variable in variables:
+                    # O index é [1] porque o array é ["", "S", ">", "NP"]
+                    # Quando achar a variavel que inicia a regra, aloca as outras variaveis, terminais nela
                     if tempRow[1] ==variable.getValue():
-                        print(variable)
-                        print(variable.getVarsTerms())
                         queijo = alocateTerms(variables, terminals, tempRow[2:], variable)
                         variable.varsTerms.append(queijo)
-                        print(variable.getVarsTerms())
-                        print("---")
-                    index += 1
         else:
+            # Le o arquivo e modifica a ação do loop anterior
             if row == "Terminais":
                 readingWhat = "Terminais"
             elif row == "Variaveis":
@@ -140,6 +151,7 @@ def readerFile():
                 readingWhat = "Inicial"
             elif row == "Regras":
                 readingWhat =  "Regras"
+    return variables, terminals, firstSymbol
 
 def printVariables(variables):
     for variable in variables:
@@ -150,26 +162,24 @@ def printVariables(variables):
         print("-------------")
 
 def alocateTerms(variables, terminals, terms, mainVar):
+    # Vai ler cada termo da regra dada, ex: "[ S ] > [ NP ] [ VP ] ;1",
+    # aqui só chega a partir do: ""> [ NP ] [ VP ] ;1"
+    # (corto o símbolo inical que é a Variavel que já está sendo alocada)
+    # Eu vejo o "nome" do termo (var, ou terminal) e procura esse nome nas listas de: variables, terminals
+    # quando eu acho, eu do append nas varsTerms da variavel principal da regra
+    # terminando desse jeito: S(mainVar), varsTerm(do S) = [classNP,classVP]
     tempTerms = []
     for term in terms:
         for variable in variables:
             if term == variable.getValue():
-                tempTerms.append(variable.getValue())
+                tempTerms.append(variable)
         for terminal in terminals:
             if term == terminal.getValue():
-                tempTerms.append(terminal.getValue())
+                tempTerms.append(terminal)
     #print(tempTerms)
     return tempTerms
 
 if __name__ == '__main__':
     # Ex: Linguagem
-
-
-
-    V = Variable("V", [[Terminal("dos tempos", "Plural", "Masculino")], [Terminal("das cidades", "Plural", "Feminino")], [Terminal("das vidas", "Plural", "Masculino")]], "Sei La")
-    R = Variable("R", [[Terminal("os homens", "Plural", "Masculino")],[Terminal("as mulheres", "Plural", "Feminino")]], "Sei La")
-    J = Variable("J", [[Terminal("deram o popo", "Plural", "Masculino")]], "Sei La")
-    Y = Variable("Y", [[Terminal("O inicio", "Singular", "Neutro")]], "Sei La")
-    P = Variable("P",[[Y, V, R, J,], [Terminal("Ops hehe", "Singular", "Neutro")]], "Inicio")
-
-    readerFile()
+    variables, terminals, firstSymbol = readerFile()
+    firstLooping(firstSymbol, variables)
