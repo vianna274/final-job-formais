@@ -1,21 +1,26 @@
 #user.py
-class Variable():
-    mainVar = None
+from random import randint
+
+class GeneralClass():
+    value = None
     varsTerms = None
     totalmenteVisitado = None
     estado = None
 
-    def __init__(self,mainVar, varsTerms, estado):
-        self.setMainVar(mainVar)
-        self.varsTerms = varsTerms
-        self.totalmenteVisitado = False
-        self.estado = estado
+    # mainVar = variavels da esquerda
+    # mainVar = variavel da esquerda
+    # varsTerms = lista de tuplas [(V, "var"),("*", "ponto") (R,"var"), ("oi","term")]
+    def __init__(self, value, varsTerms, estado):
+        self.setValue(value)
+        self.setVarsTerms(varsTerms)
+        self.setTotalmenteVisitado(False)
+        self.setEstado(estado)
 
-    def setMainVar(self,mainVar):
-        self.mainVar = mainVar
-        
-    def getMainVar(self):
-        return self.mainVar
+    def setValue(self, value):
+        self.value = value
+
+    def getValue(self):
+        return self.value
 
     def setVarsTerms(self,varsTerms):
         self.varsTerms = varsTerms
@@ -24,7 +29,7 @@ class Variable():
         return self.varsTerms
 
     def setTotalmenteVisitado(self,totalmenteVisitado):
-        self.varsTerms = totalmenteVisitado
+        self.totalmenteVisitado = totalmenteVisitado
 
     def getTotalmenteVisitado(self):
         return self.totalmenteVisitado
@@ -35,11 +40,53 @@ class Variable():
     def getEstado(self):
         return self.estado
 
+class Variable(GeneralClass):
+    def __init__(self,mainVar, varsTerms, estado):
+        GeneralClass.__init__(self,mainVar, varsTerms, estado)
+    def getRandomThing(self):
+        lenghtTerms = len(self.varsTerms)
+        randomTerm = self.varsTerms[randint(0,lenghtTerms-1)]
+        return randomTerm
+
+    def getClass(self):
+        return "Variable"
+
+class Terminal():
+    genre = None
+    number = None
+    value = None
+
+    def __init__(self, value, genre, number):
+        self.setValue(value)
+        self.setGenre(genre)
+        self.setNumber(number)
+
+    def setValue(self, value):
+        self.value = value
+
+    def getValue(self):
+        return self.value
+
+    def setGenre(self, genre):
+        self.genre = genre
+
+    def getGenre(self):
+        return self.genre
+
+    def setNumber(self, number):
+        self.number = number
+
+    def getNumber(self):
+        return self.number
+
+    def getClass(self):
+        return "Terminal"
+
+def looping(P):
+    if(P.getClass() == "Terminal"):
+        print(P.getValue())
+    if (P.getClass() == "Variable"):
+        terms = P.getRandomThing()
+        for term in terms:
+            looping(term)
 if __name__ == '__main__':
-    a = Variable("Exemplo de mainVar",5,'Exemplo de estado: desligado')
-    print(a.getMainVar())
-    print(a.getTotalmenteVisitado())
-    print(a.getVarsTerms())
-    print(a.getEstado())
-    
-    
