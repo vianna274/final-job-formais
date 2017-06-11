@@ -90,3 +90,12 @@ def looping(P):
         for term in terms:
             looping(term)
 if __name__ == '__main__':
+    # Ex: Linguagem
+
+    V = Variable("V", [[Terminal("dos tempos", "Plural", "Masculino")], [Terminal("das cidades", "Plural", "Feminino")], [Terminal("das vidas", "Plural", "Masculino")]], "Sei La")
+    R = Variable("R", [[Terminal("os homens", "Plural", "Masculino")],[Terminal("as mulheres", "Plural", "Feminino")]], "Sei La")
+    J = Variable("J", [[Terminal("deram o popo", "Plural", "Masculino")]], "Sei La")
+    Y = Variable("Y", [[Terminal("O inicio", "Singular", "Neutro")]], "Sei La")
+    P = Variable("P",[[Y, V, R, J,], [Terminal("Ops hehe", "Singular", "Neutro")]], "Inicio")
+
+    looping(P)
