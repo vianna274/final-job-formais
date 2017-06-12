@@ -4,17 +4,12 @@ from random import randint
 class GeneralClass():
     value = None
     varsTerms = []
-    totalmenteVisitado = None
-    estado = None
 
-    # mainVar = variavels da esquerda
     # mainVar = variavel da esquerda
-    # varsTerms = lista de tuplas [(V, "var"),("*", "ponto") (R,"var"), ("oi","term")]
-    def __init__(self, value, varsTerms, estado):
+    # varsTerms = terminais e variaveis do lado DIREITO
+    def __init__(self, value, varsTerms):
         self.setValue(value)
         self.varsTerms = []
-        self.setTotalmenteVisitado(False)
-        self.setEstado(estado)
 
     def setValue(self, value):
         self.value = value
@@ -28,25 +23,15 @@ class GeneralClass():
     def getVarsTerms(self):
         return self.varsTerms
 
-    def setTotalmenteVisitado(self,totalmenteVisitado):
-        self.totalmenteVisitado = totalmenteVisitado
-
-    def getTotalmenteVisitado(self):
-        return self.totalmenteVisitado
-
-    def setEstado(self,estado):
-        self.estado = estado
-
-    def getEstado(self):
-        return self.estado
-
 class Variable(GeneralClass):
-    def __init__(self,value, varsTerms, estado):
-        GeneralClass.__init__(self,value, varsTerms, estado)
+    # Herda GeneralClass (recebe todos os metodos e variaveis)
+    def __init__(self,value, varsTerms):
+        GeneralClass.__init__(self,value, varsTerms)
 
     def __str__(self):
         return "Variable " + str(self.value)
 
+    # Retorna um elemento aleatório do "varTerms"
     def getRandomThing(self):
         lenghtTerms = len(self.varsTerms)
         randomTerm = self.varsTerms[randint(0,lenghtTerms-1)]
@@ -90,16 +75,22 @@ class Terminal():
         return "Terminal"
 
 def firstLooping(firstSymbol, variables):
+    # Vai procurar o SimboloInicial em todas as variaveis e utilizar ela
+    # para começar a criar a gramatica
     for variable in variables:
         if variable.getValue() == firstSymbol:
+            # Se for uma loucura a gramatica começar com um terminal, já printa ele
             if(variable.getClass() == "Terminal"):
                 print(variable.getValue())
+            # Se for uma Variavel, vai pegar um elemento randomico do seu lado esquerdo
+            # E executar do mesmo jeito esse termo
             if (variable.getClass() == "Variable"):
                 terms = variable.getRandomThing()
                 for term in terms:
                     looping(term)
 
 def looping(variable):
+    # Faz tudo igual a firstLooping, exceto a parte do firstSymbol
     if(variable.getClass() == "Terminal"):
         print(variable.getValue())
     if (variable.getClass() == "Variable"):
@@ -123,7 +114,7 @@ def readerFile():
                 terminals.append(Terminal(tempRow[1],"Masc","Sing"))
             elif readingWhat == "Variaveis":
                 tempRow = row.split(' ')
-                variables.append(Variable(tempRow[1],[],"None"))
+                variables.append(Variable(tempRow[1],[]))
             elif readingWhat == "Inicial":
                 tempRow = row.split(' ')
                 firstSymbol = tempRow[1]
@@ -153,13 +144,6 @@ def readerFile():
                 readingWhat =  "Regras"
     return variables, terminals, firstSymbol
 
-def printVariables(variables):
-    for variable in variables:
-        print(variable)
-        print(variable.getVarsTerms())
-        #for term in variable.getVarsTerms():
-            #print(term)
-        print("-------------")
 
 def alocateTerms(variables, terminals, terms, mainVar):
     # Vai ler cada termo da regra dada, ex: "[ S ] > [ NP ] [ VP ] ;1",
