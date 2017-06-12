@@ -2,7 +2,7 @@ import re
 import copy
 from random import randint
 
-class Variable():
+class Variable(): # mainVar = variavel da esquerda | |  varsTerms = terminais e variaveis do lado DIREITO
     def __init__(self, valor, termos):
         self.setValue(valor)
         self.varsTerms = []
@@ -104,6 +104,10 @@ def printaVariaveis(variaveis):
 #            looping(term)
 
 
+def getVar_fromList(value, lista):
+    for x in lista:
+        if x.getValue() == value:
+            return x
 
 def readInput():
     try: #Se testa abrir o arquivo sample.txt
@@ -124,34 +128,33 @@ def readInput():
                 del new_phrase[:]
                 new_phrase = re.findall(r'\[ ([^]]*)\ ]', line) #salva a ou as palavras da linha na lista de novas palavras
 
-                if case == 4:   #Se estiver lendo as regras, tem mais de 1 palavra na linha
-                    del varsTerms[:]
-                    for variavelAtual in variaveis: #Procura a variavel da esquerda da regra na lsita de variaveis
-                            if variavelAtual.getValue() == new_phrase[0]:
-                                    for elemento in new_phrase[1:] :  #Procura as variaveis da direita na lista de variaveis e adiciona elas na varsTerms
-                                        if not isTerminal(elemento,terminais): #                                                    (lista de variveis)
-                                            for varGeradora in variaveis:
-                                                    if varGeradora.getValue() == elemento:
-                                                        varsTerms.append(varGeradora)
+                if case == 1:
+                    terminais.append( Terminal( new_phrase[0],None,None ) )
 
-                                        else: #Se nao estiver na lista de variaveis, é um terminal que vai para a lista varsTerms da variavel à esquerda
-                                            varsTerms.append(elemento)
-                                    variavelAtual.appendTerm(copy.deepcopy(varsTerms))
-
-                else: #Senao é apenas 1 e só instancia objeto que ela é e adiciona à sua lista correspondente
-                    if case == 1:
-                        terminais.append( Terminal( new_phrase[0],None,None ) )
-                    elif case == 2:
+                elif case == 2:
+                    if case == 2:
                         new_Variavel = Variable(new_phrase[0],None )
                         variaveis.append( new_Variavel )
 
-            elif case == 1: #Depois de ler todos os terminais seta que case é 2, ou seja, proximas palavras a lerem serao variaveis
+                elif case == 4:   #Se estiver lendo as regras, tem mais de 1 palavra na linha
+                    del varsTerms[:]
+                    variavelAtual = getVar_fromList(new_phrase[0],variaveis) #Pega o objeto referente à variavel da esquerda da regra na list de variaveis
+                    for elemento in new_phrase[1:] :  #O resto de variaveis ou terminais da regra serão adicionadas à varsTerms da variavel da esquerda
+                        if not isTerminal(elemento,terminais):
+                            varGeradora = getVar_fromList(elemento,variaveis)
+                            varsTerms.append(varGeradora)  #Se é uma variavel, se adiciona o objeto referente a ele à varsTerms da varaivel à esquerda
+
+                        else: #Se nao estiver na lista de variaveis, é um terminal que vai para a lista varsTerms da variavel à esquerda
+                            varsTerms.append(elemento)
+                    variavelAtual.appendTerm(copy.deepcopy(varsTerms))
+
+            elif case == 1: #Depois de acabar de ler todos os terminais seta que case é 2, ou seja, proximas palavras a lerem serao variaveis
                 case +=1
 
-            elif case == 2: #Depois de ler todos as variaveis seta que case é 3, ou seja, proxima palavra a ser lida sera variavel inicial
+            elif case == 2: #Depois de acabar de ler todos as variaveis seta que case é 3, ou seja, proxima palavra a ser lida sera variavel inicial
                 case +=1
 
-            elif case == 3: #Depois de ler a variavel de inicio seta que case é 4, ou seja, proximas palavras a serem lida serao regras
+            elif case == 3: #Depois de acabar de ler a variavel de inicio seta que case é 4, ou seja, proximas palavras a serem lida serao regras
                 startingWord = new_phrase[0]
                 case +=1
 
