@@ -28,16 +28,7 @@ def searchFinalDot(states, state, mainVariable):
     # Pega só o "valor" da variavel para ser procurada
     value = mainVariable.getValue()
     if not mainVariable.alreadySaw():
-        # Procura no estado anterior se tem alguém com o ponto anterior a variavel que esta sendo buscada
-        # Ex: T -> F. /0  @@ No anterior tem E -> .T * F /0, daí atualiza o estado com E -> T . * F /0
-        for variable in states[state-1].getVarsTerms():
-            if not variable.dotIsFinal():
-                if variable.getVarsTerms()[variable.getDotIndex()+1].getValue() == value and not alreadyInside(states[state].getVarsTerms(),variable):
-                    tempVar = copyVariable(variable)
-                    tempVar.moveDot()
-                    states[state].setVarsTerms(tempVar)
-
-        # Faz o mesmo para o estado "nativo" da variavel
+        # Procura o termo da esquerda no estado logo após o /
         for variable in states[mainVariable.getState()].getVarsTerms():
             if not variable.dotIsFinal():
                 if variable.getVarsTerms()[variable.getDotIndex()+1].getValue() == value and not alreadyInside(states[state].getVarsTerms(),variable):
@@ -51,14 +42,7 @@ def searchFinalDot(states, state, mainVariable):
 def searchDotVar(states, variable, state):
     # Pega só o "valor" da variavel para ser procurada
     value = variable.getVarsTerms()[variable.getDotIndex()+1].getValue()
-    # Procura se a variável está no indice anterior sucedendo um ponto
-    # Ex: mainVariavel = T, e dai no termo anterior tem S = Q . T, então botaria S no novo estado
-    for var in states[state-1].getVarsTerms():
-        if var.getValue() == value and not var.dotIsFinal():
-            tempVar = copyVariable(var)
-            states[state].setVarsTerms(tempVar)
-    # Procura também no estado nativo da variavel, se a variavel que está sendo procurada
-    # foi criada no estado 1, vai ser procurada no estado 1. EVITANDO CÓPIAS
+    # Procura o termo direto nas regras geradas do termo 0
     for var in states[0].getVarsTerms():
         if var.getValue() == value and not var.dotIsFinal():
             if not alreadyInside(states[state].getVarsTerms(), var):
@@ -93,6 +77,13 @@ def alreadyInside(variables, variableAux):
         variable.setDot(dotInd)
     else:
         variableAux.setDot(dotIndAux)
+        return False
+
+def alreadyInsideWithDots(variables, variableAux):
+    for variable in variables:
+        if variable.getValue() == variableAux.getValue() and variable.getVarsTerms() == variableAux.getVarsTerms():
+            return True
+    else:
         return False
 
 # Verifica se 2 variaveis são iguais (tem redundância com a anteior, mas cansei de arrumar)
@@ -155,16 +146,16 @@ def recognizationPhaseTwo(phrase, states, firstSymbol):
                 searchDotVar(states, var, stateNum)
             elif opt == "Frase Errada" or opt == "Acabou":
                 verifying = False
-            for state in states:
-                print("_____")
-                for x in state.getVarsTerms():
-                    print(x)
-                    print(x.getVarsTerms())
-                    print(x.getState())
-                print(word)
-                print("@@@@")
-            time.sleep(2)
         stateNum = stateNum + 1
+        print(word)
+    for state in states:
+        print("_____")
+        for x in state.getVarsTerms():
+            print(x)
+            print(x.getVarsTerms())
+            print(x.getState())
+        print("@@@@")
+
 
 
 
@@ -176,7 +167,8 @@ if __name__ == '__main__':
     states = []
     states.append(State(0, recognizationPhaseOne(variaveis)))
 
-    recognizationPhaseTwo(["X", "+", "X"], states, startingVar)
+    recognizationPhaseTwo(["atencao","a experiencia mostra que","o novo modelo estrutural aqui preconizado","prejudica a percepcao da importancia","das opcoes basicas para o sucesso do programa"], states, startingVar)
+    #recognizationPhaseTwo(["dog","runs"], states, startingVar)
     if(recognized(states,startingVar)):
         print("OPA DEU CERTO")
     else:
