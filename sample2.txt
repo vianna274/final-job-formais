@@ -1,0 +1,135 @@
+Terminais
+[ caros ]        #inicio dos terminais do tipo TP (trata público)
+[ estimados ]
+[ queridos ]
+[ atenciosos ]   #fim dos terminais do tipo TP (trata público)
+[ ouvintes ]     #inicio dos terminais do tipo AP (altera público)
+[ professores ]
+[ colegas ]
+[ amigos ]       #fim dos terminais do tipo AP (altera público)
+[ com certeza ]  #inicio dos terminais do tipo EE (enrolação extra)
+[ atencao ]
+[ com licenca ]  #fim dos terminais do tipo EE (enrolação extra)
+[ obrigado ]     #inicio dos terminais do tipo DE (despedida enrolação)
+[ bom dia ]
+[ boa tarde ]  
+[ boa noite ]    #fim dos terminais do tipo DE (despedida enrolação)
+[ em sintese, ]             #inicio dos terminais do tipo PE (primeira enrolação)
+[ por outro lado, ]
+[ nao podemos esquecer que ]
+[ do mesmo modo, ]
+[ a pratica mostra que ]
+[ nunca eh demais insistir que ]
+[ a experiencia mostra que ]
+[ eh importante ressaltar que ]
+[ o incentivo ao avanco tecnologico, assim como ]
+[ assim mesmo, ]             #fim dos terminais do tipo PE (primeira enrolação)
+[ a execucao deste projeto ]              #inicio dos terminais do tipo SE (segunda enrolação)
+[ a complexidade dos estudos efetuados ]
+[ a atual estrutura de organizacao ]
+[ o novo modelo estrutural aqui preconizado ]
+[ o desenvolvimento de formas distintas de atuacao ]
+[ a constante divulgacao das informacoes ]
+[ a consolidacao das estruturas ]
+[ a analise dos diversos resultados ]
+[ o inicio do programa de formacao de atitudes ]
+[ a expansao de nossas atividades ]       #fim dos terminais do tipo SE (segunda enrolação)
+[ nos obriga a analise ]              #inicio dos terminais do tipo TE (terceira enrolação)
+[ cumpre um papel essencial na formulacao ]
+[ auxilia a preparacao e a estruturacao ]
+[ contribui para a correta determinacao ]
+[ assume importantes posicoes na definicao ]
+[ facilita a definicao ]
+[ prejudica a percepcao da importancia ]
+[ oferece uma boa oportunidade de verificacao ]
+[ acarreta um processo de reformulacao ]
+[ exige precisao e definicao ]        #fim dos terminais do tipo TE (terceira enrolação)
+[ das nossas opcoes de desenvolvimento futuro ]   #inicio dos terminais do tipo QE (quarta enrolação)
+[ das nossas metas financeiras e administrativas ]
+[ das atitudes e das atribuicoes da diretoria ]
+[ das novas proposicoes ]
+[ das opcoes basicas para o sucesso do programa ]
+[ do nosso sistema de formacao de quadros ]
+[ das condicoes apropriadas para os negocios ]
+[ dos indices pretendidos ]
+[ das formas de acao ]
+[ dos conceitos de participacao geral ]           #fim dos terminais do tipo QE (quarta enrolação) 
+Variaveis
+[ S ]   #start
+[ EE ]  #enrolação extra
+[ AP ]  #altera público
+[ TP ]  #trata público
+[ DE ]  #despedida enrolação
+[ PE ]  #primeira enrolação
+[ SE ]  #segunda enrolação
+[ TE ]  #terceira enrolação
+[ QE ]  #quarta enrolação
+[ CE ]  #conjunto de enrolação
+[ JE ]  #junta enrolação
+[ AE ]  #agrupa enrolação
+Inicial
+[ S ]   #start
+Regras 
+[ S ] > [ CE ] [ AE ]
+[ CE ] > [ PE ]
+[ CE ] > [ EE ] [ PE ]
+[ PE ] > [ TP ] [ AP ]
+[ AE ] > [ SE ] [ JE ]
+[ JE ] > [ TE ] [ QE ]
+[ JE ] > [ TE ] [ QE ] [ DE ]
+[ TP ] > [ caros ]                #inicio dos terminais do tipo TP (trata público)
+[ TP ] > [ estimados ]
+[ TP ] > [ queridos ]
+[ TP ] > [ atenciosos ]           #fim dos terminais do tipo TP (trata público)
+[ AP ] > [ ouvintes ]             #inicio dos terminais do tipo AP (altera público)
+[ AP ] > [ professores ]
+[ AP ] > [ colegas ]
+[ AP ] > [ amigos ]               #fim dos terminais do tipo AP (altera público)
+[ EE ] > [ com certeza ]          #inicio dos terminais do tipo EE (enrolação extra)
+[ EE ] > [ atencao ]
+[ EE ] > [ com licenca ]          #fim dos terminais do tipo EE(enrolação extra)
+[ DE ] > [ obrigado ]             #inicio dos terminais do tipo DE (despedida enrolação)
+[ DE ] > [ bom dia ]
+[ DE ] > [ boa tarde ]  
+[ DE ] > [ boa noite ]            #fim dos terminais do tipo DE (despedida enrolação)
+[ PE ] > [ em sintese, ]          #inicio dos terminais do tipo PE (primeira enrolação)
+[ PE ] > [ por outro lado, ]
+[ PE ] > [ nao podemos esquecer que ]
+[ PE ] > [ do mesmo modo, ]
+[ PE ] > [ a pratica mostra que ]
+[ PE ] > [ nunca eh demais insistir que ]
+[ PE ] > [ a experiencia mostra que ]
+[ PE ] > [ eh importante ressaltar que ]
+[ PE ] > [ o incentivo ao avanco tecnologico, assim como ]
+[ PE ] > [ assim mesmo, ]         #fim dos terminais do tipo PE (primeira enrolação)
+[ SE ] > [ a execucao deste projeto ]              #inicio dos terminais do tipo SE (segunda enrolação)
+[ SE ] > [ a complexidade dos estudos efetuados ]
+[ SE ] > [ a atual estrutura de organizacao ]
+[ SE ] > [ o novo modelo estrutural aqui preconizado ]
+[ SE ] > [ o desenvolvimento de formas distintas de atuacao ]
+[ SE ] > [ a constante divulgacao das informacoes ]
+[ SE ] > [ a consolidacao das estruturas ]
+[ SE ] > [ a analise dos diversos resultados ]
+[ SE ] > [ o inicio do programa de formacao de atitudes ]
+[ SE ] > [ a expansao de nossas atividades ]       #fim dos terminais do tipo SE (segunda enrolação)
+[ TE ] > [ nos obriga a analise ]                  #inicio dos terminais do tipo TE (terceira enrolação)
+[ TE ] > [ cumpre um papel essencial na formulacao ]
+[ TE ] > [ auxilia a preparacao e a estruturacao ]
+[ TE ] > [ contribui para a correta determinacao ]
+[ TE ] > [ assume importantes posicoes na definicao ]
+[ TE ] > [ facilita a definicao ]
+[ TE ] > [ prejudica a percepcao da importancia ]
+[ TE ] > [ oferece uma boa oportunidade de verificacao ]
+[ TE ] > [ acarreta um processo de reformulacao ]
+[ TE ] > [ exige precisao e definicao ]            #fim dos terminais do tipo TE (terceira enrolação)
+[ QE ] > [ das nossas opcoes de desenvolvimento futuro ]   #inicio dos terminais do tipo QE (quarta enrolação)
+[ QE ] > [ das nossas metas financeiras e administrativas ]
+[ QE ] > [ das atitudes e das atribuicoes da diretoria ]
+[ QE ] > [ das novas proposicoes ]
+[ QE ] > [ das opcoes basicas para o sucesso do programa ]
+[ QE ] > [ do nosso sistema de formacao de quadros ]
+[ QE ] > [ das condicoes apropriadas para os negocios ]
+[ QE ] > [ dos indices pretendidos ]
+[ QE ] > [ das formas de acao ]
+[ QE ] > [ dos conceitos de participacao geral ]           #fim dos terminais do tipo QE (quarta enrolação)
+

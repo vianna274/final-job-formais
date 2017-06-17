@@ -1,6 +1,7 @@
 import re
 from variableClass import *
 from terminalClass import *
+from stateClass import *
 
 def isTerminal(palavra, lista):
     retorno = False
