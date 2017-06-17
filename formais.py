@@ -30,7 +30,7 @@ def firstLooping(firstSymbol, variables):
     if(variable.getClass() == "Terminal"): # Se for uma loucura a gramatica começar com um terminal, já printa ele
         print(variable.getValue())
 
-    if (variable.getClass() == "Variable"):    # Se for uma Variavel, vai pegar um elemento randomico do seu lado esquerdo
+    elif (variable.getClass() == "Variable"):    # Se for uma Variavel, vai pegar um elemento randomico do seu lado esquerdo
         a = (variable.getVarsTerms())[0]
         terms = variable.getRandomThing()   # E executar do mesmo jeito esse termo
         for term in terms:
