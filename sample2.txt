@@ -2,7 +2,7 @@ Terminais				# A secao de simbolos terminais eh a primeira do arquivo.
 [ runs ]				# Tudo o que estiver apos o sustenido (#) sera considerado comentario
 [ barks ]				# Os simbolos terminais sao qualquer sequencia de caracteres (nao reservados) entre colchetes.
 [ eats ]				# A secao de simbolos terminais inicia com a palavra-chave "Terminais"
-[ dog ]					# Eh altamente recomendavel que simbolos terminais iniciem por caracteres minusculos
+[ dog fuck ]					# Eh altamente recomendavel que simbolos terminais iniciem por caracteres minusculos
 [ cat ]					# Simbolos nao podem conter os caracteres "[", "]", "#" ou ">", por serem caracteres reservados
 [ meat ]				# Apesar disso, eles podem conter outros caracteres especiais e espacos tambem.
 [ the ]					# Normalmente sera necessario apenas um caractere minusculo para definir um simbolo terminal.
@@ -19,7 +19,7 @@ Inicial					# O simbolo inicial possui uma secao propria, iniciada pela palavra 
 Regras					# A ultima secao vem encabecada pela palavra-chave "Regras"
 [ S ] > [ NP ] [ VP ] ;1	# Nas regras de producao, coloca-se o simbolo da esquerda entre colchetes antes
 [ NP ] > [ N ] ;0.7		# do simbolo de ">", que representa a derivacao.
-[ N ] > [ dog ] ;0.3			# Os simbolos da direita devem estar cada um entre colchetes e separados por espacos,
+[ N ] > [ dog fuck ] ;0.3			# Os simbolos da direita devem estar cada um entre colchetes e separados por espacos,
 [ N ] > [ cat ] ;0.3			# a fim de definir-se a fronteira entre dois simbolos.
 [ N ] > [ meat ] ;0.4		# As regras de producao devem seguir as restricoes de uma GLC.
 [ VP ] > [ V ] [ NP ] ;0.8	# Linhas em branco entre as secoes e entre os itens nao serao toleradas.
