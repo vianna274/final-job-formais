@@ -53,6 +53,7 @@ def searchDotVar(states, variable, state):
 # Faz o início de cada estado, procura a variável que tem o terminal
 # Para começar o processo do algoritmo
 def firstSymbolOfGroup(states, word, state):
+    found = False
     for variable in states[state-1].getVarsTerms():
         if variable == None:
             return
@@ -61,6 +62,8 @@ def firstSymbolOfGroup(states, word, state):
                 tempAux = copyVariable(variable)
                 tempAux.moveDot()
                 states[state].setVarsTerms(tempAux)
+                found = True
+    return found
 
 # Verifica se um termo já está dentro do array ignorando os pontos
 def alreadyInside(variables, variableAux):
@@ -132,22 +135,41 @@ def whatVerify(states, state):
 
 # Leia, cansei de documentar
 def recognizationPhaseTwo(phrase, states, firstSymbol):
+    # Estado atual
     stateNum = 1
+    # Variavel para armazenar o dado caso não ache terminal
+    varBuffer = ""
     for word in phrase:
-        states.append(State(stateNum,[]))
-        firstSymbolOfGroup(states, word, stateNum)
-        verifying = True
-        while(verifying):
-            opt, var = whatVerify(states, stateNum)
-            #print(opt)
-            if opt == "Ponto Final":
-                searchFinalDot(states, stateNum, var)
-            elif opt == "Ponto Variavel":
-                searchDotVar(states, var, stateNum)
-            elif opt == "Frase Errada" or opt == "Acabou":
-                verifying = False
-        stateNum = stateNum + 1
-        print(word)
+        # Se a variavel estiver vazia quer dizer que reconheceu e procedeu o algoritmo certo, então cria um novo estado
+        if varBuffer == "":
+            states.append(State(stateNum,[]))
+        # Se o buffer estiver com algo, ele deve ser realocado para ser reconhecido com a próxima palavra
+        if varBuffer != "":
+            totalPhrase = varBuffer + " " + word
+            varBuffer = totalPhrase
+        else:
+            totalPhrase = word
+        # Vai achar o primeiro elemento do Estado N (o terminal), retornará True se achou, False caso não
+        foundTerminal = firstSymbolOfGroup(states, totalPhrase, stateNum)
+        # Se achou, zera o buffer e começa o loop
+        if foundTerminal:
+            varBuffer = ""
+            verifying = True
+            while(verifying):
+                # Recebe a próxima ação decorrente de todas as variáveis no estado atual
+                opt, var = whatVerify(states, stateNum)
+                print(opt)
+                if opt == "Ponto Final":
+                    searchFinalDot(states, stateNum, var)
+                elif opt == "Ponto Variavel":
+                    searchDotVar(states, var, stateNum)
+                if opt == "Acabou":
+                    verifying = False
+            stateNum = stateNum + 1
+        # Se não achou, armazena a palavra no buffer para o próximo reconhecimento
+        else:
+            varBuffer = word
+    # Só para printar todos os estados no final da execução
     for state in states:
         print("_____")
         for x in state.getVarsTerms():
@@ -167,10 +189,9 @@ if __name__ == '__main__':
     states = []
     states.append(State(0, recognizationPhaseOne(variaveis)))
 
-    recognizationPhaseTwo(["atencao","a experiencia mostra que","o novo modelo estrutural aqui preconizado","prejudica a percepcao da importancia","das opcoes basicas para o sucesso do programa"], states, startingVar)
-    #recognizationPhaseTwo(["dog","runs"], states, startingVar)
+    recognizationPhaseTwo(["atencao","a experiencia","mostra que","o novo modelo","estrutural aqui preconizado","prejudica a percepcao","da importancia","das opcoes basicas para o sucesso do programa"], states, startingVar)
+    #recognizationPhaseTwo(["dog fuck","runs"], states, startingVar)
     if(recognized(states,startingVar)):
         print("OPA DEU CERTO")
     else:
         print("COCO NAO SEI MAIS O Q ESCREVER")
-    #print(searchTermAfterDot(stateZero,stateZero, "X", 0))
