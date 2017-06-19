@@ -40,11 +40,11 @@ def searchFinalDot(states, state, mainVariable):
 
 # Recebe todos os estados, o estado atual e a Variavel que vai ser procurada
 # Atualiza a lista States, atualizando o estado atual
-def searchDotVar(states, variable, state):
+def searchDotVar(states, variable, state, unknownState):
     # Pega só o "valor" da variavel para ser procurada
     value = variable.getVarsTerms()[variable.getDotIndex()+1].getValue()
     # Procura o termo direto nas regras geradas do termo 0
-    for var in states[0].getVarsTerms():
+    for var in unknownState.getVarsTerms():
         if var.getValue() == value and not var.dotIsFinal():
             if not alreadyInside(states[state].getVarsTerms(), var):
                 tempVar = copyVariable(var)
@@ -68,6 +68,24 @@ def firstSymbolOfGroup(states, word, state):
                 states[state].setVarsTerms(tempAux)
                 found = True
     return found
+
+# Faz o grupo 0 a partir da variavel inicial
+def firstVarOfGroup(states, unknownState, firstVar):
+    for variable in unknownState.getVarsTerms():
+        if variable.getValue() == firstVar:
+            tempAux = copyVariable(variable)
+            states[0].setVarsTerms(tempAux)
+    verifying = True
+    while(verifying):
+        # Recebe a próxima ação decorrente de todas as variáveis no estado atual
+        opt, var = whatVerify(states, 0)
+        print(opt)
+        if opt == "Ponto Final":
+            searchFinalDot(states, 0, var)
+        elif opt == "Ponto Variavel":
+            searchDotVar(states, var, 0, unknownState)
+        if opt == "Acabou":
+            verifying = False
 
 # Verifica se um termo já está dentro do array ignorando os pontos
 def alreadyInside(variables, variableAux):
@@ -178,7 +196,9 @@ def recognizationPhaseTwo(phrase, states, firstSymbol):
     # Só para printar todos os estados no final da execução
 
 
-def recognize(phrase, states):
+def recognize(phrase, states, unknownState, firstVar):
+    # Faz o grupo 0 a partir da variavel inicial
+    firstVarOfGroup(states, unknownState, firstVar)
     # até toda frase ser lida ou até algo n ser reconhecido
     termsFound = True
     stateNum = 1
@@ -205,7 +225,7 @@ def recognize(phrase, states):
                     if opt == "Ponto Final":
                         searchFinalDot(states, stateNum, var)
                     elif opt == "Ponto Variavel":
-                        searchDotVar(states, var, stateNum)
+                        searchDotVar(states, var, stateNum, unknownState)
                     if opt == "Acabou":
                         verifying = False
                 stateNum = stateNum + 1
@@ -236,13 +256,14 @@ def removeLastWord(phrase):
 
 
 if __name__ == '__main__':
-    variaveis, terminais, startingVar = readInput()
+    variaveis, terminais, firstVar = readInput()
 
     states = []
-    states.append(State(0, recognizationPhaseOne(variaveis)))
+    states.append(State(0, []))
+    unknownState = State(0,recognizationPhaseOne(variaveis))
 
     #recognizationPhaseTwo(["eu", "gosto de", "batata"], states, startingVar)
-    recognize("eu gosto", states)
+    recognize("X * X", states, unknownState, firstVar)
 
     for state in states:
         print("\nSTATE")
@@ -251,7 +272,7 @@ if __name__ == '__main__':
             #print(x.getVarsTerms())
             #print(x.getState())
 
-    if(recognized(states,startingVar)):
+    if(recognized(states, firstVar)):
         print("CERTO")
     else:
         print("ERRADO")
