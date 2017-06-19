@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from input import *
 import time
 
@@ -53,8 +54,11 @@ def searchDotVar(states, variable, state):
 # Faz o início de cada estado, procura a variável que tem o terminal
 # Para começar o processo do algoritmo
 def firstSymbolOfGroup(states, word, state):
+    #print("WORD = " + word)
     found = False
     for variable in states[state-1].getVarsTerms():
+        #print("VAR = " + variable.getValue())
+        #print("VARDOT = " + str(variable.dotIsFinal()))
         if variable == None:
             return
         if not variable.dotIsFinal():
@@ -108,7 +112,9 @@ def sameVariable(A, B):
 # Recebe os estados e o SimboloInicial, se no último estado tiver o SimboloInicial com o ponto no Final
 # E no estado 0 será aceito como palavra
 def recognized(states, startSymbol):
+    print("\nINICIAL: " + startSymbol)
     for var in states[len(states)-1].getVarsTerms():
+        print("VAR = " + var.getValue())
         if (var.getValue() == startSymbol and var.dotIsFinal() and var.getState() == 0):
             return True
     return False
@@ -170,17 +176,63 @@ def recognizationPhaseTwo(phrase, states, firstSymbol):
         else:
             varBuffer = word
     # Só para printar todos os estados no final da execução
-    for state in states:
-        print("_____")
-        for x in state.getVarsTerms():
-            print(x)
-            print(x.getVarsTerms())
-            print(x.getState())
-        print("@@@@")
 
 
+def recognize(phrase, states):
+    # até toda frase ser lida ou até algo n ser reconhecido
+    termsFound = True
+    stateNum = 1
+    staAux = 0
+    while phrase != "" and termsFound:
+        aux = phrase
+        print("\nESTADO = " + str(stateNum))
+        print("ENTRADA: \"" + phrase + "\"")
+        # até a auxiliar ser lida
+        found = False
+        while aux != "" and not found:
+            print("TESTANDO: " + aux)
+            if stateNum != staAux:
+                states.append(State(stateNum,[]))
+                staAux = stateNum
+            foundTerminal = firstSymbolOfGroup(states, aux, stateNum)
+            # se achou terminal, show
+            if foundTerminal:
+                print("FOUND: " + aux)
+                found = True
+                verifying = True
+                while (verifying):
+                    opt, var = whatVerify(states, stateNum)
+                    if opt == "Ponto Final":
+                        searchFinalDot(states, stateNum, var)
+                    elif opt == "Ponto Variavel":
+                        searchDotVar(states, var, stateNum)
+                    if opt == "Acabou":
+                        verifying = False
+                stateNum = stateNum + 1
+            # n achou terminal: tira última palavra e tenta de novo
+            else:
+                print("NOT FOUND")
+                temp = aux
+                aux = removeLastWord(aux)
+                if temp == aux:
+                    aux = ""
+            # se nao achou, nao reconheceu. termsFound = false para parar o while de fora
+        if not found:
+            termsFound = False
+            print("NOT FOUND: " + aux)
+        else:
+            # se achou, remove aux de phrase e vai de novo
+            phrase = phrase.replace(aux, '', 1).strip()
+            print("RESTOU = \"" + phrase + "\"")
+        # se no fim, acabar por ser phrase == "", então reconheceu tudo e termsFound será true
+    if termsFound:
+        print("\n>>>> RECONHECIDO")
+    else:
+        print("\n>>>> NAO RECONHECIDO")
 
 
+def removeLastWord(phrase):
+    return phrase.rsplit(' ', 1)[0]
 
 
 if __name__ == '__main__':
@@ -189,9 +241,17 @@ if __name__ == '__main__':
     states = []
     states.append(State(0, recognizationPhaseOne(variaveis)))
 
-    recognizationPhaseTwo(["atencao","a experiencia","mostra que","o novo modelo","estrutural aqui preconizado","prejudica a percepcao","da importancia","das opcoes basicas para o sucesso do programa"], states, startingVar)
-    #recognizationPhaseTwo(["dog fuck","runs"], states, startingVar)
+    #recognizationPhaseTwo(["eu", "gosto de", "batata"], states, startingVar)
+    recognize("eu gosto", states)
+
+    for state in states:
+        print("\nSTATE")
+        for x in state.getVarsTerms():
+            print(x)
+            #print(x.getVarsTerms())
+            #print(x.getState())
+
     if(recognized(states,startingVar)):
-        print("OPA DEU CERTO")
+        print("CERTO")
     else:
-        print("COCO NAO SEI MAIS O Q ESCREVER")
+        print("ERRADO")
