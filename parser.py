@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from input import *
-import time
 
 # Recebe uma variavel e retorna uma cópia dela
 # Serve para tirar os ponteiros do mesmo lugar
@@ -254,25 +253,38 @@ def recognize(phrase, states, unknownState, firstVar):
 def removeLastWord(phrase):
     return phrase.rsplit(' ', 1)[0]
 
-
 if __name__ == '__main__':
-    variaveis, terminais, firstVar = readInput()
+    CHECK = "1"
+    EXIT = "2"
 
-    states = []
-    states.append(State(0, []))
-    unknownState = State(0,recognizationPhaseOne(variaveis))
+    while True:
+        option = input("\n1 - Checar string\n2 - Sair\n\n:")
+        if option == EXIT:
+            break
 
-    #recognizationPhaseTwo(["eu", "gosto de", "batata"], states, startingVar)
-    recognize("X * X", states, unknownState, firstVar)
+        elif option == CHECK:
+            inputFile = input("\nArquivo da gramatica: ")
+            variaveis, terminais, firstVar = readInput(inputFile)
 
-    for state in states:
-        print("\nSTATE")
-        for x in state.getVarsTerms():
-            print(x)
-            #print(x.getVarsTerms())
-            #print(x.getState())
+            states = []
+            states.append(State(0, []))
+            unknownState = State(0,recognizationPhaseOne(variaveis))
+            #recognizationPhaseTwo(["eu", "gosto de", "batata"], states, startingVar)
 
-    if(recognized(states, firstVar)):
-        print("CERTO")
-    else:
-        print("ERRADO")
+            inputString = input("\nString a ser checada: ")
+            recognize(inputString, states, unknownState, firstVar)
+
+            for state in states:
+                print("\nSTATE")
+                for x in state.getVarsTerms():
+                    print(x)
+                    #print(x.getVarsTerms())
+                    #print(x.getState())
+
+            if(recognized(states, firstVar)):
+                print("CERTO")
+            else:
+                print("ERRADO")
+
+        else:
+            print("\nOpcao invalida")
