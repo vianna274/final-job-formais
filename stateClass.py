@@ -4,8 +4,8 @@ class State():
         self.stateId = stateId
         self.varsTerms = varsTerms
 
-    def getId(self):
-        return self.getId
+    def getValue(self):
+        return self.stateId
 
     def setVarsTerms(self, varTerm):
         self.varsTerms.append(varTerm)
