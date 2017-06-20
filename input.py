@@ -15,9 +15,9 @@ def getVar_fromList(value, lista):
         if x.getValue() == value:
             return x
 
-def readInput():
+def readInput(inputFile):
     try: #Se testa abrir o arquivo sample.txt
-        arquivo = open('sample.txt','r')
+        arquivo = open(inputFile,'r')
         palavras = []
         variaveis = []
         terminais = []  #Declaração de todas as variaveis a serem utilizadas
@@ -73,5 +73,5 @@ def readInput():
         return variaveis, terminais, startingWord
 
     except IOError: #Se nao conseguiu se abrir o arquivo
-        print ('Could not open file! Please be sure sample.txt is in the same folder')
+        print ('Could not open "' + inputFile + '"! Please be sure it is in the same folder')
         exit()
