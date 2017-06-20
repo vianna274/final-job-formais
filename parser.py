@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
+import re
 from input import *
+import os
+import os.path
+
 
 # Recebe uma variavel e retorna uma cópia dela
 # Serve para tirar os ponteiros do mesmo lugar
@@ -21,7 +25,6 @@ def recognizationPhaseOne(variables):
             tempVar.setState(0)
             stateZero.append(tempVar)
     return stateZero
-
 
 # Recebe a variavel que vai ser buscada
 def searchFinalDot(states, state, mainVariable):
@@ -86,6 +89,22 @@ def firstVarOfGroup(states, unknownState, firstVar):
         if opt == "Acabou":
             verifying = False
 
+# Faz o grupo 0 a partir da variavel inicial
+def firstVarOfGroup(states, unknownState, firstVar):
+    for variable in unknownState.getVarsTerms():
+        if variable.getValue() == firstVar:
+            tempAux = copyVariable(variable)
+            states[0].setVarsTerms(tempAux)
+    verifying = True
+    while(verifying):
+        opt, var = whatVerify(states, 0)
+        if opt == "Ponto Final":
+            searchFinalDot(states, 0, var)
+        elif opt == "Ponto Variavel":
+            searchDotVar(states, var, 0, unknownState)
+        if opt == "Acabou":
+            verifying = False
+
 # Verifica se um termo já está dentro do array ignorando os pontos
 def alreadyInside(variables, variableAux):
     dotIndAux = variableAux.getDotIndex()
@@ -129,9 +148,9 @@ def sameVariable(A, B):
 # Recebe os estados e o SimboloInicial, se no último estado tiver o SimboloInicial com o ponto no Final
 # E no estado 0 será aceito como palavra
 def recognized(states, startSymbol):
-    print("\nINICIAL: " + startSymbol)
+    #print("\nINICIAL: " + startSymbol)
     for var in states[len(states)-1].getVarsTerms():
-        print("VAR = " + var.getValue())
+        #print("VAR = " + var.getValue())
         if (var.getValue() == startSymbol and var.dotIsFinal() and var.getState() == 0):
             return True
     return False
@@ -152,139 +171,101 @@ def whatVerify(states, state):
             if (variable.getVarsTerms()[variable.getDotIndex()+1].getClass() == "Variable"):
                 variable.setSaw(True)
                 return "Ponto Variavel", variable
-
     return "Acabou", "Error"
 
-
 # Leia, cansei de documentar
-def recognizationPhaseTwo(phrase, states, firstSymbol):
+def recognizationPhaseTwo(phrase, states, firstVar, unknownState):
+    firstVarOfGroup(states, unknownState, firstVar)
     # Estado atual
     stateNum = 1
     # Variavel para armazenar o dado caso não ache terminal
-    varBuffer = ""
     for word in phrase:
-        # Se a variavel estiver vazia quer dizer que reconheceu e procedeu o algoritmo certo, então cria um novo estado
-        if varBuffer == "":
-            states.append(State(stateNum,[]))
-        # Se o buffer estiver com algo, ele deve ser realocado para ser reconhecido com a próxima palavra
-        if varBuffer != "":
-            totalPhrase = varBuffer + " " + word
-            varBuffer = totalPhrase
-        else:
-            totalPhrase = word
+        states.append(State(stateNum, []))
         # Vai achar o primeiro elemento do Estado N (o terminal), retornará True se achou, False caso não
-        foundTerminal = firstSymbolOfGroup(states, totalPhrase, stateNum)
+        foundTerminal = firstSymbolOfGroup(states, word, stateNum)
+        if not foundTerminal:
+            return
         # Se achou, zera o buffer e começa o loop
-        if foundTerminal:
-            varBuffer = ""
-            verifying = True
-            while(verifying):
-                # Recebe a próxima ação decorrente de todas as variáveis no estado atual
-                opt, var = whatVerify(states, stateNum)
-                print(opt)
-                if opt == "Ponto Final":
-                    searchFinalDot(states, stateNum, var)
-                elif opt == "Ponto Variavel":
-                    searchDotVar(states, var, stateNum)
-                if opt == "Acabou":
-                    verifying = False
-            stateNum = stateNum + 1
-        # Se não achou, armazena a palavra no buffer para o próximo reconhecimento
-        else:
-            varBuffer = word
-    # Só para printar todos os estados no final da execução
+        verifying = True
+        while(verifying):
+            # Recebe a próxima ação decorrente de todas as variáveis no estado atual
+            opt, var = whatVerify(states, stateNum)
+            #print(opt)
+            if opt == "Ponto Final":
+                searchFinalDot(states, stateNum, var)
+            elif opt == "Ponto Variavel":
+                searchDotVar(states, var, stateNum, unknownState)
+            if opt == "Acabou":
+                verifying = False
+        stateNum = stateNum + 1
 
+def listarPalavras(frase):
+    s = frase
 
-def recognize(phrase, states, unknownState, firstVar):
-    # Faz o grupo 0 a partir da variavel inicial
-    firstVarOfGroup(states, unknownState, firstVar)
-    # até toda frase ser lida ou até algo n ser reconhecido
-    termsFound = True
-    stateNum = 1
-    staAux = 0
-    while phrase != "" and termsFound:
-        aux = phrase
-        print("\nESTADO = " + str(stateNum))
-        print("ENTRADA: \"" + phrase + "\"")
-        # até a auxiliar ser lida
-        found = False
-        while aux != "" and not found:
-            print("TESTANDO: " + aux)
-            if stateNum != staAux:
-                states.append(State(stateNum,[]))
-                staAux = stateNum
-            foundTerminal = firstSymbolOfGroup(states, aux, stateNum)
-            # se achou terminal, show
-            if foundTerminal:
-                print("FOUND: " + aux)
-                found = True
-                verifying = True
-                while (verifying):
-                    opt, var = whatVerify(states, stateNum)
-                    if opt == "Ponto Final":
-                        searchFinalDot(states, stateNum, var)
-                    elif opt == "Ponto Variavel":
-                        searchDotVar(states, var, stateNum, unknownState)
-                    if opt == "Acabou":
-                        verifying = False
-                stateNum = stateNum + 1
-            # n achou terminal: tira última palavra e tenta de novo
-            else:
-                print("NOT FOUND")
-                temp = aux
-                aux = removeLastWord(aux)
-                if temp == aux:
-                    aux = ""
-            # se nao achou, nao reconheceu. termsFound = false para parar o while de fora
-        if not found:
-            termsFound = False
-            print("NOT FOUND: " + aux)
-        else:
-            # se achou, remove aux de phrase e vai de novo
-            phrase = phrase.replace(aux, '', 1).strip()
-            print("RESTOU = \"" + phrase + "\"")
-        # se no fim, acabar por ser phrase == "", então reconheceu tudo e termsFound será true
-    if termsFound:
-        print("\n>>>> RECONHECIDO")
+    lis = re.findall(r'\"(.*?)\"', s)
+    for x in lis:
+        s = s.replace('"' + x + '"',x.replace(' ','-'))
+
+    s = s.split()
+    for i in range(0,len(s)):
+        if '-' in s[i]:
+            s[i] = s[i].replace('-',' ')
+    return s
+
+# Printa todos os estados na tela bonitinho
+def printStates(states):
+    for state in states:
+        print("---- ESTADO " + str(state.getValue()) + " ----")
+        for variable in state.getVarsTerms():
+            print(variable, end=" --> ")
+            for term in variable.getVarsTerms():
+                print(term, end=" ")
+            print("", end="\n")
+def cleanScreen():
+    if os.name == 'nt':
+        os.system('CLS')
     else:
-        print("\n>>>> NAO RECONHECIDO")
+        os.system('clear')
 
+def mainFunction():
+        CHECK = "1"
+        EXIT = "2"
+        while True:
+            option = input("Digite: \n\n1 - Checar string\n2 - Sair\n\n>")
 
-def removeLastWord(phrase):
-    return phrase.rsplit(' ', 1)[0]
+            if option == (EXIT):
+                break
+
+            elif option == (CHECK):
+                print("Escreva a sentença a ser testada na gramatica e os terminais compostos entre " " \"\"")
+                inputFile = input("\nArquivo da gramatica: ")
+                inputString = input("\nString a ser checada: ")
+
+                if os.path.exists(str(inputFile)):
+                    variaveis, terminais, firstVar = readInput(str(inputFile))
+
+                    states = []
+                    unknownState = State(0, recognizationPhaseOne(variaveis))
+                    states.append(State(0,[]))
+
+                    recognizationPhaseTwo(listarPalavras(str(inputString)), states, firstVar, unknownState)
+
+                    printStates(states)
+                    if(recognized(states, firstVar)):
+                        print("\n>>>> RECONHECIDO")
+                    else:
+                        print("\n>>>> NAO RECONHECIDO")
+                    input('Pressione qualquer tecla para continuar')
+                    cleanScreen()
+
+                else:
+                    input("\n!Nome de arquivo invalido!\nPressione qualquer tecla e digite uma operacao valida!")
+                    cleanScreen()
+            else:
+
+                input("!Opcao invalida!\nPressione qualquer tecla e digite uma operacao valida!")
+                cleanScreen()
+
 
 if __name__ == '__main__':
-    CHECK = "1"
-    EXIT = "2"
-
-    while True:
-        option = input("\n1 - Checar string\n2 - Sair\n\n:")
-        if option == EXIT:
-            break
-
-        elif option == CHECK:
-            inputFile = input("\nArquivo da gramatica: ")
-            variaveis, terminais, firstVar = readInput(inputFile)
-
-            states = []
-            states.append(State(0, []))
-            unknownState = State(0,recognizationPhaseOne(variaveis))
-            #recognizationPhaseTwo(["eu", "gosto de", "batata"], states, startingVar)
-
-            inputString = input("\nString a ser checada: ")
-            recognize(inputString, states, unknownState, firstVar)
-
-            for state in states:
-                print("\nSTATE")
-                for x in state.getVarsTerms():
-                    print(x)
-                    #print(x.getVarsTerms())
-                    #print(x.getState())
-
-            if(recognized(states, firstVar)):
-                print("CERTO")
-            else:
-                print("ERRADO")
-
-        else:
-            print("\nOpcao invalida")
+    mainFunction()
