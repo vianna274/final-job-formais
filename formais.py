@@ -15,7 +15,7 @@ def printaVariaveis(variaveis):
 def looping(variable):
      #Faz tudo igual a firstLooping, exceto a parte do firstSymbol
     if(variable.getClass() == "Terminal"):
-        print(variable.getValue())
+        print("---" + variable.getValue() + "---")
     if (variable.getClass() == "Variable"):
         terms = variable.getRandomThing()
         for term in terms:
@@ -28,7 +28,7 @@ def firstLooping(firstSymbol, variables):
     #input()
     variable = getVar_fromList(firstSymbol,variables)
     if(variable.getClass() == "Terminal"): # Se for uma loucura a gramatica começar com um terminal, já printa ele
-        print(variable.getValue())
+        print("---" + variable.getValue() + "---")
 
     elif (variable.getClass() == "Variable"):    # Se for uma Variavel, vai pegar um elemento randomico do seu lado esquerdo
         a = (variable.getVarsTerms())[0]
@@ -38,6 +38,6 @@ def firstLooping(firstSymbol, variables):
 
 
 if __name__ == '__main__':
-    variaveis, terminais, startingVar = readInput()
+    variaveis, terminais, startingVar = readInput("sample.txt")
 
     firstLooping(startingVar, variaveis)
