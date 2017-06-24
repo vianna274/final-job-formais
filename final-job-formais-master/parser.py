@@ -18,7 +18,7 @@ def recognizationPhaseOne(variables):
     stateZero = []
     currentState = 0
     for variable in variables:
-        for term in variable.getVarsTerms():
+        for term in variable.getVarsTerms(): # getVarsTerms()[1:] -> Assim a mágica onde ignora as probabilidades (considera um vetor a partir do indice 1: em diante)
             withDot = list(".") + term
             tempVar = Variable(variable.getValue(), [])
             tempVar.expendTerm(withDot)
@@ -237,13 +237,17 @@ def mainFunction():
                 break
 
             elif option == (CHECK):
-                print("Escreva a sentença a ser testada na gramatica e os terminais compostos entre " " \"\"")
+                print("Escreva a sentença a ser testada na gramatica e os terminais compostos entre " " \"\"") #sample2.txt
                 inputFile = input("\nArquivo da gramatica: ")
                 inputString = input("\nString a ser checada: ")
 
                 if os.path.exists(str(inputFile)):
                     variaveis, terminais, firstVar = readInput(str(inputFile))
 
+                    #print(variaveis[0],'\n',variaveis[0].getVarsTerms()[0][0],variaveis[0].getVarsTerms()[0][1],variaveis[0].getVarsTerms()[1][0],variaveis[0].getVarsTerms()[1][1],variaveis[0].getVarsTerms()[2][0],variaveis[0].getVarsTerms()[2][1])
+                    #print(variaveis[2],'\n  ',variaveis[2].getVarsTerms()[0][0],variaveis[2].getVarsTerms()[0][1],'     ',variaveis[2].getVarsTerms()[1][0],variaveis[2].getVarsTerms()[1][1],variaveis[2].getVarsTerms()[1][2])
+                    #print(variaveis[len(variaveis)-1],variaveis[len(variaveis)-1].getVarsTerms()[0][0],variaveis[len(variaveis)-1].getVarsTerms()[0][1],variaveis[len(variaveis)-1].getVarsTerms()[0][2])
+                    #input()
                     states = []
                     unknownState = State(0, recognizationPhaseOne(variaveis))
                     states.append(State(0,[]))
