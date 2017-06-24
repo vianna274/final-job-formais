@@ -84,11 +84,10 @@ class files:
             return str(filesJSON(['sample.txt', 'sample1.txt', 'sample2.txt']))
         except Exception as exp:
             return str(exp)
-                
+
 
 
 if __name__ == '__main__':
     # crio a aplicacao web passando as URLS dos meus serviços e rodo ela
     app = web.application(urls, globals())
     app.run()
-    

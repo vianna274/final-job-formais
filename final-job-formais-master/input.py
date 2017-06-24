@@ -22,9 +22,9 @@ def probEAD(line):
         elif '\n' in line:
             prob = float (re.sub(r'\s', '',(re.findall(r';(.*?)\n',line))[0]))
         else:
-            prob = float (re.sub(r'\s', '',(re.findall(r';(.*?) ',line))[0]))
+            prob = float (re.sub(r'\s', '',(re.findall(r';(.*?)\Z',line))[0]))
     except:
-        print('Gramática de entrada inválida, não possui probabilidades corretamente no .txt')
+        print('Gramatica de entrada invalida, nao possui probabilidades corretamente no .txt')
         quit(0)
     return prob
 
