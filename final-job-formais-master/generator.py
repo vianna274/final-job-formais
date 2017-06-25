@@ -113,8 +113,8 @@ def hasAnyDotTerminal(state):
         if hasDotTerminal(variable):
             return True
     return False
-def returnAllVarDotTerminal(state):
 
+def returnAllVarDotTerminal(state):
     tempVars = []
     for variable in state.getVarsTerms():
         if hasDotTerminal(variable):
@@ -129,14 +129,27 @@ def getRandomTerminal(variables):
     var = tempVar[randint(0, len(tempVar)-1)]
     prob = randint(0,100)
     chances = 0
+    tempVar = None
     for variable in variables:
+        tempVar = variable
         if variable.getValue() == var:
             chances += int(variable.getVarsTerms()[0]*100)
             if prob <= chances:
                 return variable
+    return tempVar
 
 def getTerminalValueAfterDot(variable):
+    if variable.dotIsFinal():
+        return
     return variable.getVarsTerms()[variable.getDotIndex()+1].getValue()
+
+def getRandomSomething(varsTerms):
+    chance = 0
+    prob = randint(0,100)
+    for varTerm in varsTerms:
+        chance += int(varTerm.getVarsTerms()[0]*100)
+        if prob <= chance:
+            return varTerm
 
 """                RECONHECIMENTO                 """
 # Faz o primeiro loop para encher o estado 0 com todas as regras
@@ -163,11 +176,14 @@ def recognizationPhaseTwo(states, firstVar, unknownState):
     while(hasAnyDotTerminal(states[stateNum-1])):
         states.append(State(stateNum, []))
         # Vai achar o primeiro elemento do Estado N (o terminal), retornará True se achou, False caso não
+        #print(returnAllVarDotTerminal(states[stateNum-1]))
+        #print(getRandomTerminal(returnAllVarDotTerminal(states[stateNum-1])))
         word = getTerminalValueAfterDot(getRandomTerminal(returnAllVarDotTerminal(states[stateNum-1])))
         print(word, end=" ")
         foundTerminal = firstSymbolOfGroup(states, word, stateNum)
         if not foundTerminal:
             return
+
         # Se achou, zera o buffer e começa o loop
         verifying = True
         while(verifying):
@@ -180,7 +196,7 @@ def recognizationPhaseTwo(states, firstVar, unknownState):
             if opt == "Acabou":
                 verifying = False
         stateNum = stateNum + 1
-
+    printStates(states)
 """                   REGRAS                      """
 
 # Recebe a variavel que vai ser buscada
@@ -203,12 +219,15 @@ def searchDotVar(states, variable, state, unknownState):
     # Pega só o "valor" da variavel para ser procurada
     value = variable.getVarsTerms()[variable.getDotIndex()+1].getValue()
     # Procura o termo direto nas regras geradas do termo 0
+    tempVars = []
     for var in unknownState.getVarsTerms():
         if var.getValue() == value and not var.dotIsFinal():
             if not alreadyInside(states[state].getVarsTerms(), var):
                 tempVar = copyVariable(var)
                 tempVar.setState(state)
-                states[state].setVarsTerms(tempVar)
+                tempVars.append(tempVar)
+
+    states[state].setVarsTerms(getRandomSomething(tempVars))
 
 # Faz o início de cada estado, procura a variável que tem o terminal
 # Para começar o processo do algoritmo
