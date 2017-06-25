@@ -24,6 +24,8 @@ def probEAD(line):
         else:
             prob = float (re.sub(r'\s', '',(re.findall(r';(.*?)\Z',line))[0]))
     except:
+        print(line)
+        input()
         print('Gramatica de entrada invalida, nao possui probabilidades corretamente no .txt')
         quit(0)
     return prob
@@ -53,13 +55,13 @@ def readInput(inputFile):
         terminais = []  #Declaração de todas as variaveis a serem utilizadas
         varsTerms = []
         new_phrase = []
-        case = 0
+        case = 1
         startingWord = None
         flag = 0
 
         for line in arquivo: # A primeira linha contendo trash se ignora usando case 0 para quando ainda não se está lendo linhas corretas
-            if case == 0:
-                case += 1
+            if line[0] == '#' or len(line) == 1 :
+                case = case
 
             elif '[ ' and ' ]' in line: #Se tiver palavras válidas na linha ( dentro de [ ] )
                 del new_phrase[:]
@@ -81,13 +83,13 @@ def readInput(inputFile):
                         variavelAtual.getVarsTerms()[tam-1].append(x)
                     del varsTerms[:]
 
-            elif case == 1: #Depois de acabar de ler todos os terminais seta que case é 2, ou seja, proximas palavras a lerem serao variaveis
+            elif case == 1 and (line.split())[0] == 'Variaveis': #Depois de acabar de ler todos os terminais seta que case é 2, ou seja, proximas palavras a lerem serao variaveis
                 case +=1
 
-            elif case == 2: #Depois de acabar de ler todos as variaveis seta que case é 3, ou seja, proxima palavra a ser lida sera variavel inicial
+            elif case == 2 and (line.split())[0] == 'Inicial': #Depois de acabar de ler todos as variaveis seta que case é 3, ou seja, proxima palavra a ser lida sera variavel inicial
                 case +=1
 
-            elif case == 3: #Depois de acabar de ler a variavel de inicio seta que case é 4, ou seja, proximas palavras a serem lida serao regras
+            elif case == 3 and (line.split())[0] == 'Regras' : #Depois de acabar de ler a variavel de inicio seta que case é 4, ou seja, proximas palavras a serem lida serao regras
                 startingWord = new_phrase[0]
                 case +=1
         arquivo.close()
