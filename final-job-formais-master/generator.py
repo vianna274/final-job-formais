@@ -196,7 +196,7 @@ def recognizationPhaseTwo(states, firstVar, unknownState):
             if opt == "Acabou":
                 verifying = False
         stateNum = stateNum + 1
-    printStates(states)
+    #printStates(states)
 """                   REGRAS                      """
 
 # Recebe a variavel que vai ser buscada
