@@ -172,19 +172,13 @@ def recognizationPhaseTwo(states, firstVar, unknownState):
     firstVarOfGroup(states, unknownState, firstVar)
     # Estado atual
     stateNum = 1
-    # Variavel para armazenar o dado caso não ache terminal
     while(hasAnyDotTerminal(states[stateNum-1])):
         states.append(State(stateNum, []))
-        # Vai achar o primeiro elemento do Estado N (o terminal), retornará True se achou, False caso não
-        #print(returnAllVarDotTerminal(states[stateNum-1]))
-        #print(getRandomTerminal(returnAllVarDotTerminal(states[stateNum-1])))
         word = getTerminalValueAfterDot(getRandomTerminal(returnAllVarDotTerminal(states[stateNum-1])))
         print(word, end=" ")
         foundTerminal = firstSymbolOfGroup(states, word, stateNum)
         if not foundTerminal:
             return
-
-        # Se achou, zera o buffer e começa o loop
         verifying = True
         while(verifying):
             # Recebe a próxima ação decorrente de todas as variáveis no estado atual
@@ -196,7 +190,6 @@ def recognizationPhaseTwo(states, firstVar, unknownState):
             if opt == "Acabou":
                 verifying = False
         stateNum = stateNum + 1
-    #printStates(states)
 """                   REGRAS                      """
 
 # Recebe a variavel que vai ser buscada
