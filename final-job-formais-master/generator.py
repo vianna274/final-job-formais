@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
+import web
 from input import *
 import os
 import os.path
@@ -7,6 +8,9 @@ import os.path
 """                AUXILIARES                   """
 # Recebe uma variavel e retorna uma cópia dela
 # Serve para tirar os ponteiros do mesmo lugar
+urls = ('/generate/', 'gen')
+phrase = ""
+
 def copyVariable(variable):
     tempVar = Variable(variable.getValue(), [])
     tempVar.expendTerm(variable.getVarsTerms())
@@ -169,12 +173,14 @@ def recognizationPhaseOne(variables):
 
 # Leia, cansei de documentar
 def recognizationPhaseTwo(states, firstVar, unknownState):
+    global phrase
     firstVarOfGroup(states, unknownState, firstVar)
     # Estado atual
     stateNum = 1
     while(hasAnyDotTerminal(states[stateNum-1])):
         states.append(State(stateNum, []))
         word = getTerminalValueAfterDot(getRandomTerminal(returnAllVarDotTerminal(states[stateNum-1])))
+        phrase = phrase + word + " "
         print(word, end=" ")
         foundTerminal = firstSymbolOfGroup(states, word, stateNum)
         if not foundTerminal:
@@ -262,6 +268,17 @@ def recognized(states, startSymbol):
             return True
     return False
 
+class gen:
+    def GET(self):
+        global phrase
+        phrase = ""
+        variaveis, terminais, firstVar = readInput("sample.txt")
+        states = []
+        unknownState = State(0, recognizationPhaseOne(variaveis))
+        states.append(State(0,[]))
+        recognizationPhaseTwo(states, firstVar, unknownState)
+        return phrase
+
 """                   MENU                      """
 def mainFunction():
     variaveis, terminais, firstVar = readInput("sample.txt")
@@ -271,4 +288,6 @@ def mainFunction():
     recognizationPhaseTwo(states, firstVar, unknownState)
 
 if __name__ == '__main__':
-    mainFunction()
+    app = web.application(urls, globals())
+    app.run()
+    #mainFunction()
