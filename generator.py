@@ -9,6 +9,18 @@ import os.path
 urls = ('/generate/', 'gen')
 phrase = ""
 
+class gen:
+    def GET(self):
+        global phrase
+        phrase = ""
+        variaveis, terminais, firstVar = readInput("sample.txt")
+        print(phrase)
+        states = []
+        unknownState = State(0, recognizationPhaseOne(variaveis))
+        states.append(State(0,[]))
+        recognizationPhaseTwo(states, firstVar, unknownState)
+        return phrase
+
 # Copia uma variavel
 def copyVariable(variable):
     tempVar = Variable(variable.getValue(), [])
