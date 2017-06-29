@@ -11,12 +11,14 @@ import os.path
 urls = ('/generate/', 'gen')
 phrase = ""
 
+# Copia uma variavel
 def copyVariable(variable):
     tempVar = Variable(variable.getValue(), [])
     tempVar.expendTerm(variable.getVarsTerms())
     tempVar.setState(variable.getState())
     return tempVar
 
+# Verifica se uma variableAux já está dentro das variables
 def alreadyInsideWithDots(variables, variableAux):
     for variable in variables:
         if variable.getValue() == variableAux.getValue() and variable.getState() == variableAux.getState() and variable.getVarsTerms():
@@ -25,6 +27,7 @@ def alreadyInsideWithDots(variables, variableAux):
     else:
         return False
 
+# Verifica se os termos da variable1 são iguais da variable2
 def sameVarTerms(variable1, variable2):
     if len(variable1.getVarsTerms()) != len(variable2.getVarsTerms()):
         return False
@@ -35,7 +38,6 @@ def sameVarTerms(variable1, variable2):
             elif variable1.getVarsTerms()[index].getValue() != variable2.getVarsTerms()[index].getValue():
                 return False
     return True
-
 
 # Recebe todos os estados e o número do estado atual
 # Verifica todas as variaveis do atual estado para saber qual o próximo passo
@@ -85,6 +87,7 @@ def cleanScreen():
     else:
         os.system('clear')
 
+# Verifica se tem ". Terminal"
 def hasDotTerminal(variable):
     if variable.dotIsFinal():
         return False
@@ -93,12 +96,14 @@ def hasDotTerminal(variable):
     else:
         return False
 
+# Verifica se em um estado existe alguma variável com ". estado"
 def hasAnyDotTerminal(state):
     for variable in state.getVarsTerms():
         if hasDotTerminal(variable):
             return True
     return False
 
+# Recebe uma lista de Variaveis e Terminais e retorna um randomicamente utilizando as porcentagem
 def getRandomSomething(varsTerms):
     chance = 0
     prob = 0
@@ -111,6 +116,33 @@ def getRandomSomething(varsTerms):
         chance += int(varTerm.getVarsTerms()[0]*100)
         if prob <= chance:
             return varTerm
+
+# Faz o grupo 0 a partir da variavel inicial
+def mountGroupZero(states, unknownState, firstVar):
+    for variable in unknownState.getVarsTerms():
+        if variable.getValue() == firstVar and not alreadyInsideWithDots(states[0].getVarsTerms(), variable):
+            tempAux = copyVariable(variable)
+            states[0].setVarsTerms(tempAux)
+    verifying = True
+    while(verifying):
+        # Recebe a próxima ação decorrente de todas as variáveis no estado atual
+        opt, var = whatVerify(states, 0)
+        if opt == "Ponto Final":
+            searchFinalDot(states, 0, var)
+        elif opt == "Ponto Variavel":
+            searchDotVar(states, var, 0, unknownState)
+        if opt == "Acabou" or opt == "Frase Errada":
+            verifying = False
+
+# Coloca o terminal do state X no state X+1 para iniciar o early
+def getTerminal(states, state):
+    for varTerm in states[state].getVarsTerms():
+        if hasDotTerminal(varTerm):
+            tempAux = copyVariable(varTerm)
+            tempAux.moveDot()
+            states[state+1].setVarsTerms(tempAux)
+            return varTerm.getVarsTerms()[varTerm.getDotIndex()+1].getValue()
+    return "Error"
 
 """                RECONHECIMENTO                 """
 # Faz o primeiro loop para encher o estado 0 com todas as regras
@@ -131,7 +163,7 @@ def recognizationPhaseOne(variables):
 # Leia, cansei de documentar
 def recognizationPhaseTwo(states, firstVar, unknownState):
     global phrase
-    firstVarOfGroup(states, unknownState, firstVar)
+    mountGroupZero(states, unknownState, firstVar)
     # Estado atual
     stateNum = 1
     while(hasAnyDotTerminal(states[stateNum-1])):
@@ -149,7 +181,6 @@ def recognizationPhaseTwo(states, firstVar, unknownState):
             if opt == "Acabou":
                 verifying = False
         stateNum = stateNum + 1
-    print(phrase)
 
 """                   REGRAS                      """
 
@@ -174,44 +205,20 @@ def searchFinalDot(states, state, mainVariable):
 def searchDotVar(states, variable, state, unknownState):
     # Pega só o "valor" da variavel para ser procurada
     value = variable.getVarsTerms()[variable.getDotIndex()+1].getValue()
-    # Procura o termo direto nas regras geradas do termo 0
+    # Aloca uma lista de variaveis temporarias
     tempVars = []
+    # Procura a variavel direto do estado "unknown" o qual não tem estado
     for var in unknownState.getVarsTerms():
         if var.getValue() == value:
             tempVar = copyVariable(var)
             tempVar.setState(state)
+            # Se o state não tiver uma variável identica da append na tempVars
             if not alreadyInsideWithDots(states[state].getVarsTerms(), tempVar):
                 tempVars.append(tempVar)
+    # Pega uma variavel, ou terminal randomicamente
     random = getRandomSomething(tempVars)
     if (random != None):
         states[state].setVarsTerms(random)
-
-# Faz o grupo 0 a partir da variavel inicial
-def firstVarOfGroup(states, unknownState, firstVar):
-    for variable in unknownState.getVarsTerms():
-        if variable.getValue() == firstVar and not alreadyInsideWithDots(states[0].getVarsTerms(), variable):
-            tempAux = copyVariable(variable)
-            states[0].setVarsTerms(tempAux)
-    verifying = True
-    while(verifying):
-        # Recebe a próxima ação decorrente de todas as variáveis no estado atual
-        opt, var = whatVerify(states, 0)
-        if opt == "Ponto Final":
-            searchFinalDot(states, 0, var)
-        elif opt == "Ponto Variavel":
-            searchDotVar(states, var, 0, unknownState)
-        if opt == "Acabou" or opt == "Frase Errada":
-            verifying = False
-
-
-def getTerminal(states, state):
-    for varTerm in states[state].getVarsTerms():
-        if hasDotTerminal(varTerm):
-            tempAux = copyVariable(varTerm)
-            tempAux.moveDot()
-            states[state+1].setVarsTerms(tempAux)
-            return varTerm.getVarsTerms()[varTerm.getDotIndex()+1].getValue()
-    return "Error"
 
 # Recebe os estados e o SimboloInicial, se no último estado tiver o SimboloInicial com o ponto no Final
 # E no estado 0 será aceito como palavra
@@ -231,6 +238,7 @@ def mainFunction():
     states.append(State(0,[]))
     recognizationPhaseTwo(states, firstVar, unknownState)
     printStates(states)
+    print(phrase)
 
 if __name__ == '__main__':
     #app = web.application(urls, globals())
