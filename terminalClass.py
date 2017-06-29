@@ -5,7 +5,7 @@ class Terminal():
         self.setNumber(number)
 
     def __str__(self):
-        return "Terminal " + str(self.value)
+        return " " + str(self.value)
 
     def setValue(self, value):
         self.value = value

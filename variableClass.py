@@ -65,4 +65,4 @@ class Variable(): # valor = variavel da esquerda | |  varsTerms = terminais e va
         return "Variable"
 
     def __str__(self):
-        return "Variable " + str(self.value)
+        return " " + str(self.value)
