@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
-#import web
+import web
 from input import *
 import os
 import os.path
@@ -235,16 +235,13 @@ def recognized(states, startSymbol):
 
 """                   MENU                      """
 def mainFunction():
-    variaveis, terminais, firstVar = readInput("sample.txt")
+    variaveis, terminais, firstVar = readInput("oldsample.txt")
     states = []
     unknownState = State(0, recognizationPhaseOne(variaveis))
     states.append(State(0,[]))
     recognizationPhaseTwo(states, firstVar, unknownState)
-    #printStates(states)
-    #print(phrase)
 
 if __name__ == '__main__':
     app = web.application(urls, globals())
     app.run()
-    mainFunction()
     mainFunction()

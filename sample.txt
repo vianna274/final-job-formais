@@ -24,8 +24,8 @@ Variaveis				# A secao de variaveis inicia pela palavra reservada "Variaveis", e
 Inicial					# O simbolo inicial possui uma secao propria, iniciada pela palavra "Inicial"
 [ S ]					# Essa secao possui apenas uma linha com o simbolo inicial entre colchetes.
 Regras					# A ultima secao vem encabecada pela palavra-chave "Regras"
-[ S ] > [ NP ] [ VP ] ;0.8	# Nas regras de producao, coloca-se o simbolo da esquerda entre colchetes antes
-[ S ] > [ S ] [ S ] ;0.2	# Nas regras de producao, coloca-se o simbolo da esquerda entre colchetes antes
+[ S ] > [ NP ] [ VP ] ;0.01	# Nas regras de producao, coloca-se o simbolo da esquerda entre colchetes antes
+[ S ] > [ S ] [ S ] ;0.99	# Nas regras de producao, coloca-se o simbolo da esquerda entre colchetes antes
 [ NP ] > [ dog ] ;0.2		# do simbolo de ">", que representa a derivacao.
 [ NP ] > [ cat ] ;0.2		
 [ NP ] > [ meat ] ;0.15		

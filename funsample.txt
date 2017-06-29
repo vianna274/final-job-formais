@@ -1,0 +1,146 @@
+#Linguagens Formais e Autômatos - Turma B
+#Andy Garramones(274705), João Vitor(274722), Leonardo Vianna(274721), Marlize Ramos(274703) e Matheus Rhoden (277948).
+#Gramática motivacional
+
+Terminais
+#início dos terminais do tipo E (expressão extra)
+[ Bom dia! ]
+[ Boa tarde! ]
+[ Boa noite! ]
+[ Ola! ]
+#fim dos terminais do tipo E (expressão extra)
+#início dos terminais do tipo N (nome)
+[ <nome>. ]
+#fim dos terminais do tipo N (nome)
+#início dos terminais do tipo EV (expressão verbo)
+[ Como diria ] 
+#fim dos terminais do tipo EV (expressão verbo)
+#início dos terminais do tipo P (personagem)
+[ Martin Luther King: ]
+[ Albert Einstein: ]
+[ Indiana Jones: ]
+[ James Bond: ]
+[ Charles Darwin: ]
+[ Darth Vader: ]
+[ Clarice Lispector: ]
+[ a minha avoh: ]
+#fim dos terminais do tipo P (personagem)
+#início dos terminais do tipo PE (personagem especial)
+[ Chewbacca: ]
+#fim dos terminais do tipo PE (personagem especial)
+#início dos terminais do tipo F1 (primeira frase)
+[ Nao se preocupe se as coisas nao estao indo como voce esperava, ]
+[ Oportunidades nao surgem. Eh voce quem as cria, ]
+[ Todos os seus sonhos podem se tornar realidade se voce tem coragem para persegui-los, ]
+[ O grande segredo de uma boa vida eh encontrar qual eh o seu destino. E realiza-lo, ]
+[ Comece de onde voce estah. Use o que voce tiver. Faca o que voce puder, ]
+[ Coragem eh a resistencia e o dominio do medo, nao a ausencia dele, ]
+[ Se voce realmente quer algo, nao espere. Ensine voce mesmo a ser impaciente, ]
+[ Tenha em mente que o seu desejo de atingir o sucesso eh mais importante que qualquer coisa, ]
+[ A logica pode levar de um ponto A a um ponto B. A imaginacao pode levar a qualquer lugar, ]
+[ As pessoas costumam dizer que a motivacao nao dura sempre. Bem, nem o efeito do banho, por isso recomenda-se diariamente, ]
+[ No meio da dificuldade encontra-se a oportunidade, ]
+[ O insucesso eh apenas uma oportunidade para recomecar com mais inteligencia, ]
+[ O sucesso eh ir de fracasso em fracasso sem perder entusiasmo, ]
+[ Voce precisa fazer aquilo que pensa que nao eh capaz de fazer, ]
+[ Tudo o que um sonho precisa para ser realizado eh alguem que acredite que ele possa ser realizado, ]
+#fim dos terminais do tipo F1 (primeira frase)
+#início dos terminais do tipo F2 (segunda frase)
+[ ao infinito e alem. ]
+[ na duvida, vai e mete o louco. ]
+[ se der medo, vai com medo mesmo. ]
+[ tudo seria facil, se não fossem as dificuldades. ]
+[ continue a nadar. ] 
+[ que a forca esteja com voce. ]
+[ nunca desista de seu sonho. Se ele acabou em uma padaria, procure em outra. ] 
+#fim dos terminais do tipo F2 (segunda frase)
+#início dos terminais do tipo FE (frase especial)
+[ RRRAARRWHHGWWR. ]
+#fim dos terminais do tipo FE (frase especial)
+Variaveis
+[ S ]
+#start
+[ E ]
+#expressão extra
+[ N ]
+#nome
+[ P ]
+#personagem
+[ PE ]
+#personagem especial
+[ EV ]
+#expressão verbo
+[ F1 ]
+#primeira frase
+[ F2 ]
+#segunda frase
+[ FE ]
+#frase especial
+[ P1 ]
+#primeira possibilidade
+[ P2 ]
+#segunda possibilidade
+Inicial
+[ S ]
+#start
+Regras
+[ S ] > [ P1 ] [ P2 ] ;1
+[ P1 ] > [ E ] [ F1 ] ;0.75
+[ P1 ] > [ F1 ] ;0.25
+[ P2 ] > [ N ] ;0.05
+[ P2 ] > [ N ] [ EV ] [ P ] [ F2 ] ;0.9
+[ P2 ] > [ N ] [ EV ] [ PE ] [ FE ] ;0.05
+#início dos terminais do tipo E (expressão extra)
+[ E ] > [ Bom dia! ] ;0.2
+[ E ] > [ Boa tarde! ] ;0.2
+[ E ] > [ Boa noite! ] ;0.2
+[ E ] > [ Ola! ] ;0.4
+#fim dos terminais do tipo E (expressão extra)
+#início dos terminais do tipo N (nome)
+[ N ] > [ <nome>. ] ;1
+#fim dos terminais do tipo N (nome)
+#início dos terminais do tipo EV (expressão verbo)
+[ EV ] > [ Como diria ] ;1
+#fim dos terminais do tipo EV (expressão verbo)
+#início dos terminais do tipo P (personagem)
+[ P ] > [ Martin Luther King: ] ;0.1
+[ P ] > [ Albert Einstein: ] ;0.1
+[ P ] > [ Indiana Jones: ] ;0.2
+[ P ] > [ James Bond: ] ;0.2
+[ P ] > [ Charles Darwin: ] ;0.05
+[ P ] > [ Darth Vader: ] ;0.2
+[ P ] > [ Clarice Lispector: ] ;0.05
+[ P ] > [ a minha avoh: ] ;0.1
+#fim dos terminais do tipo P (personagem)
+#início dos terminais do tipo PE (personagem especial)
+[ PE ] > [ Chewbacca: ] ;1
+#fim dos terminais do tipo PE (personagem especial)
+#início dos terminais do tipo F1 (primeira frase)
+[ F1 ] > [ Nao se preocupe se as coisas nao estao indo como voce esperava, ] ;0.07
+[ F1 ] > [ Oportunidades nao surgem. Eh voce quem as cria, ] ;0.07
+[ F1 ] > [ Todos os seus sonhos podem se tornar realidade se voce tem coragem para persegui-los, ] ;0.07
+[ F1 ] > [ O grande segredo de uma boa vida eh encontrar qual eh o seu destino. E realiza-lo, ] ;0.07
+[ F1 ] > [ Comece de onde voce estah. Use o que voce tiver. Faca o que voce puder, ] ;0.07
+[ F1 ] > [ Coragem eh a resistencia e o dominio do medo, nao a ausencia dele, ] ;0.06
+[ F1 ] > [ Se voce realmente quer algo, nao espere. Ensine voce mesmo a ser impaciente, ] ;0.06
+[ F1 ] > [ Tenha em mente que o seu desejo de atingir o sucesso eh mais importante que qualquer coisa, ] ;0.06
+[ F1 ] > [ A logica pode levar de um ponto A a um ponto B. A imaginacao pode levar a qualquer lugar, ] ;0.06
+[ F1 ] > [ As pessoas costumam dizer que a motivacao nao dura sempre. Bem, nem o efeito do banho, por isso recomenda-se diariamente, ] ;0.06
+[ F1 ] > [ No meio da dificuldade encontra-se a oportunidade, ] ;0.07
+[ F1 ] > [ O insucesso eh apenas uma oportunidade para recomecar com mais inteligencia, ] ;0.07
+[ F1 ] > [ O sucesso eh ir de fracasso em fracasso sem perder entusiasmo, ] ;0.07
+[ F1 ] > [ Voce precisa fazer aquilo que pensa que nao eh capaz de fazer, ] ;0.07
+[ F1 ] > [ Tudo o que um sonho precisa para ser realizado eh alguem que acredite que ele possa ser realizado, ] ;0.07
+#fim dos terminais do tipo F1 (primeira frase)
+#início dos terminais do tipo F2 (segunda frase)
+[ F2 ] > [ ao infinito e alem. ] ;0.2
+[ F2 ] > [ na duvida, vai e mete o louco. ] ;0.15
+[ F2 ] > [ se der medo, vai com medo mesmo. ] ;0.15
+[ F2 ] > [ tudo seria facil, se não fossem as dificuldades. ] ;0.1
+[ F2 ] > [ continue a nadar. ] ;0.1
+[ F2 ] > [ que a forca esteja com voce. ] ;0.2
+[ F2 ] > [ nunca desista de seu sonho. Se ele acabou em uma padaria, procure em outra. ] ;0.1
+#fim dos terminais do tipo F2 (segunda frase)
+#início dos terminais do tipo FE (frase especial)
+[ FE ] > [ RRRAARRWHHGWWR. ] ;1
+#fim dos terminais do tipo FE (frase especial)
