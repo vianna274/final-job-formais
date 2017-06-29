@@ -6,8 +6,6 @@ import os
 import os.path
 
 """                AUXILIARES                   """
-# Recebe uma variavel e retorna uma cópia dela
-# Serve para tirar os ponteiros do mesmo lugar
 urls = ('/generate/', 'gen')
 phrase = ""
 
@@ -242,11 +240,11 @@ def mainFunction():
     unknownState = State(0, recognizationPhaseOne(variaveis))
     states.append(State(0,[]))
     recognizationPhaseTwo(states, firstVar, unknownState)
-    printStates(states)
-    print(phrase)
+    #printStates(states)
+    #print(phrase)
 
 if __name__ == '__main__':
-    #app = web.application(urls, globals())
-    #app.run()
-    #mainFunction()
+    app = web.application(urls, globals())
+    app.run()
+    mainFunction()
     mainFunction()
