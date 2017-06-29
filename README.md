@@ -28,9 +28,9 @@ Para ser possível a execução será necessário a modificação de alguns arqu
 ## Testando
 
 Há 2 arquivos que podem ser testados:
-# Parser
+### Parser
 Para testar basta implementar um hardcoded da sua gramática dentro do algoritmo e a frase que será reconhecida pelo parser. Ele retornará se foi, ou não reconhecida.
-# Generator
+### Generator
 Este necessita apenas da gramática hardcoded e a partir disso toda vez que for executado
 
 
