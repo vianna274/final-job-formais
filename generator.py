@@ -79,6 +79,7 @@ def printStates(states):
             print(variable, end=" --> ")
             for term in variable.getVarsTerms():
                 print(term, end=" ")
+            print("/ " + str(variable.getState()))
             print("", end="\n")
 
 def cleanScreen():
