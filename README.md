@@ -2,6 +2,11 @@
 
 MotivApp é um aplicativo motivacional criado para o trabalho final da cadeira Linguagens Formais e Autômatos do institudo de informática - UFRGS.
 
+### Explicação 
+
+Para utilizar o aplicativo basta baixar o .apk em um celular android, ou emulador e executar o aplicativo normalmente.
+Ele funciona da seguinte forma: o generator.py está rodando em um server e fica gerando frases para um site do "pythonanywhere", o aplicativo feito em androidstudio consulta esse site e coloca a frase na tela do aplicativo substituindo a palavra USERNAME pelo nome do usuário no aplicativo.
+
 
 ### Pré-requesitos 
 
