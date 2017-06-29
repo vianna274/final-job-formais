@@ -8,7 +8,7 @@ Para utilizar o aplicativo basta baixar o .apk em um celular android, ou emulado
 Ele funciona da seguinte forma: o generator.py está rodando em um server e fica gerando frases para um site do "pythonanywhere", o aplicativo feito em androidstudio consulta esse site e coloca a frase na tela do aplicativo substituindo a palavra USERNAME pelo nome do usuário no aplicativo.
 
 
-### Pré-requesitos 
+### Pré-requisitos 
 
 Para desenvolver o aplicativo com a aplicação em python em android é necessário o .web module do python 2.7.x, pois o 3.x.x não estabilizou ainda.
 
