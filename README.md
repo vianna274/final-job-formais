@@ -10,10 +10,13 @@ Ele funciona da seguinte forma: o generator.py está rodando em um server e fica
 
 ### Pré-requesitos 
 
-Para utilizar o aplicativo com a aplicação em python é necessário o .web module do python 2.7.x, pois o 3.x.x não estabilizou ainda.
+Para desenvolver o aplicativo com a aplicação em python em android é necessário o .web module do python 2.7.x, pois o 3.x.x não estabilizou ainda.
 
 ```
 Basta executar o arquivo em Python que ele lhe dirá qual module estará faltando.
+```
+```
+Caso queira somente desenvolver o algoritmo em python basta excluir todas as partes do webservice.
 ```
 
 ### Instalando
