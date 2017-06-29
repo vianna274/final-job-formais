@@ -19,7 +19,9 @@ def recognizationPhaseOne(variables):
     currentState = 0
     for variable in variables:
         for term in variable.getVarsTerms(): # getVarsTerms()[1:] -> Assim a mágica onde ignora as probabilidades (considera um vetor a partir do indice 1: em diante)
-            withDot = list(".") + term
+            withDot = [term[0]]
+            withDot.extend(".")
+            withDot.extend(term[1:])
             tempVar = Variable(variable.getValue(), [])
             tempVar.expendTerm(withDot)
             tempVar.setState(0)
@@ -30,37 +32,35 @@ def recognizationPhaseOne(variables):
 def searchFinalDot(states, state, mainVariable):
     # Pega só o "valor" da variavel para ser procurada
     value = mainVariable.getValue()
-    if not mainVariable.alreadySaw():
-        # Procura o termo da esquerda no estado logo após o /
-        for variable in states[mainVariable.getState()].getVarsTerms():
-            if not variable.dotIsFinal():
-                if variable.getVarsTerms()[variable.getDotIndex()+1].getValue() == value and not alreadyInside(states[state].getVarsTerms(),variable):
-                    tempVar = copyVariable(variable)
-                    tempVar.moveDot()
-                    states[state].setVarsTerms(tempVar)
-        mainVariable.setSaw(True)
+    # Procura o termo da esquerda no estado logo após o /
+    for variable in states[mainVariable.getState()].getVarsTerms():
+        if not variable.dotIsFinal():
+            if variable.getVarsTerms()[variable.getDotIndex()+1].getValue() == value and not alreadyInsideWithDots(states[state].getVarsTerms(),variable):
+                tempVar = copyVariable(variable)
+                tempVar.moveDot()
+                states[state].setVarsTerms(tempVar)
+
 
 # Recebe todos os estados, o estado atual e a Variavel que vai ser procurada
 # Atualiza a lista States, atualizando o estado atual
 def searchDotVar(states, variable, state, unknownState):
     # Pega só o "valor" da variavel para ser procurada
     value = variable.getVarsTerms()[variable.getDotIndex()+1].getValue()
-    # Procura o termo direto nas regras geradas do termo 0
+    # Procura a variavel direto do estado "unknown" o qual não tem estado
     for var in unknownState.getVarsTerms():
-        if var.getValue() == value and not var.dotIsFinal():
-            if not alreadyInside(states[state].getVarsTerms(), var):
-                tempVar = copyVariable(var)
-                tempVar.setState(state)
+        if var.getValue() == value:
+            tempVar = copyVariable(var)
+            tempVar.setState(state)
+            # Se o state não tiver uma variável identica da append na tempVars
+            if not alreadyInsideWithDots(states[state].getVarsTerms(), tempVar):
                 states[state].setVarsTerms(tempVar)
+
 
 # Faz o início de cada estado, procura a variável que tem o terminal
 # Para começar o processo do algoritmo
 def firstSymbolOfGroup(states, word, state):
-    #print("WORD = " + word)
     found = False
     for variable in states[state-1].getVarsTerms():
-        #print("VAR = " + variable.getValue())
-        #print("VARDOT = " + str(variable.dotIsFinal()))
         if variable == None:
             return
         if not variable.dotIsFinal():
@@ -109,7 +109,6 @@ def firstVarOfGroup(states, unknownState, firstVar):
 def alreadyInside(variables, variableAux):
     dotIndAux = variableAux.getDotIndex()
     variableAux.removeDot()
-
     for variable in variables:
         dotInd = variable.getDotIndex()
         variable.removeDot()
@@ -122,12 +121,26 @@ def alreadyInside(variables, variableAux):
         variableAux.setDot(dotIndAux)
         return False
 
+# Verifica se uma variableAux já está dentro das variables
 def alreadyInsideWithDots(variables, variableAux):
     for variable in variables:
-        if variable.getValue() == variableAux.getValue() and variable.getVarsTerms() == variableAux.getVarsTerms():
-            return True
+        if variable.getValue() == variableAux.getValue() and variable.getState() == variableAux.getState() and variable.getVarsTerms():
+            if sameVarTerms(variable, variableAux):
+                return True
     else:
         return False
+
+# Verifica se os termos da variable1 são iguais da variable2
+def sameVarTerms(variable1, variable2):
+    if len(variable1.getVarsTerms()) != len(variable2.getVarsTerms()):
+        return False
+    else:
+        for index in range(1,len(variable1.getVarsTerms())):
+            if variable1.getVarsTerms()[index] == "." or variable2.getVarsTerms()[index] == ".":
+                pass
+            elif variable1.getVarsTerms()[index].getValue() != variable2.getVarsTerms()[index].getValue():
+                return False
+    return True
 
 # Verifica se 2 variaveis são iguais (tem redundância com a anteior, mas cansei de arrumar)
 def sameVariable(A, B):
@@ -148,9 +161,7 @@ def sameVariable(A, B):
 # Recebe os estados e o SimboloInicial, se no último estado tiver o SimboloInicial com o ponto no Final
 # E no estado 0 será aceito como palavra
 def recognized(states, startSymbol):
-    #print("\nINICIAL: " + startSymbol)
     for var in states[len(states)-1].getVarsTerms():
-        #print("VAR = " + var.getValue())
         if (var.getValue() == startSymbol and var.dotIsFinal() and var.getState() == 0):
             return True
     return False
@@ -165,6 +176,7 @@ def whatVerify(states, state):
             return "Frase Errada", "Error"
 
         elif(variable.dotIsFinal() and not variable.alreadySaw()):
+            variable.setSaw(True)
             return "Ponto Final", variable
 
         if (not variable.dotIsFinal() and not variable.alreadySaw()):
@@ -190,7 +202,6 @@ def recognizationPhaseTwo(phrase, states, firstVar, unknownState):
         while(verifying):
             # Recebe a próxima ação decorrente de todas as variáveis no estado atual
             opt, var = whatVerify(states, stateNum)
-            #print(opt)
             if opt == "Ponto Final":
                 searchFinalDot(states, stateNum, var)
             elif opt == "Ponto Variavel":
@@ -220,7 +231,9 @@ def printStates(states):
             print(variable, end=" --> ")
             for term in variable.getVarsTerms():
                 print(term, end=" ")
+            print("/ " + str(variable.getState()))
             print("", end="\n")
+
 def cleanScreen():
     if os.name == 'nt':
         os.system('CLS')
