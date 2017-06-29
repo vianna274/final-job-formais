@@ -30,7 +30,8 @@ def probEAD(line):
         quit(0)
     return prob
 
-def vaiTafarel(line,new_phrase,variaveis,terminais):
+#Dada uma linha contendo uma regra, considera a primeira letra como Variable e o resto como uma das suas regras junto com sua probabilidade
+def listRegrasVariable(line,new_phrase,variaveis,terminais):
     varsTerms = []
     varsTerms.append(probEAD(line))
     variavelAtual = getVar_fromList(new_phrase[0],variaveis) #Pega o objeto referente à variavel da esquerda da regra na list de variaveis
@@ -76,7 +77,7 @@ def readInput(inputFile):
                         variaveis.append( new_Variavel )
 
                 elif case == 4:
-                    variavelAtual,varsTerms = vaiTafarel(line,new_phrase,variaveis,terminais)
+                    variavelAtual,varsTerms = listRegrasVariable(line,new_phrase,variaveis,terminais)
                     variavelAtual.appendTerm([])         #Cada termo do lado direito da regra será adicionado na nova lista de regras da var da esquerda
                     tam = len(variavelAtual.getVarsTerms())
                     for x in varsTerms:
