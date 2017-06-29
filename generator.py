@@ -119,10 +119,14 @@ def getRandomSomething(varsTerms):
 
 # Faz o grupo 0 a partir da variavel inicial
 def mountGroupZero(states, unknownState, firstVar):
+    tempVars = []
     for variable in unknownState.getVarsTerms():
         if variable.getValue() == firstVar and not alreadyInsideWithDots(states[0].getVarsTerms(), variable):
             tempAux = copyVariable(variable)
-            states[0].setVarsTerms(tempAux)
+            tempVars.append(variable)
+    random = getRandomSomething(tempVars)
+    if (random != None):
+        states[0].setVarsTerms(random)
     verifying = True
     while(verifying):
         # Recebe a próxima ação decorrente de todas as variáveis no estado atual
@@ -145,7 +149,7 @@ def getTerminal(states, state):
     return "Error"
 
 """                RECONHECIMENTO                 """
-# Faz o primeiro loop para encher o estado 0 com todas as regras
+# Faz o primeiro loop para encher o estado unknows com todas as regras
 def recognizationPhaseOne(variables):
     unknownState = []
     currentState = 0
