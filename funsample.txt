@@ -1,21 +1,26 @@
-#Linguagens Formais e AutÙmatos - Turma B
-#Andy Garramones(274705), Jo„o Vitor(274722), Leonardo Vianna(274721), Marlize Ramos(274703) e Matheus Rhoden (277948).
-#Gram·tica motivacional
+#Linguagens Formais e Aut√¥matos - Turma B
+#Andy Garramones(274705), Jo√£o Vitor(274722), Leonardo Vianna(274721), Marlize Ramos(274703) e Matheus Rhoden (277948).
+#Gram√°tica motivacional
 
 Terminais
-#inÌcio dos terminais do tipo E (express„o extra)
+#in√≠cio dos terminais do tipo E (express√£o extra)
 [ Bom dia! ]
 [ Boa tarde! ]
 [ Boa noite! ]
 [ Ola! ]
+<<<<<<< HEAD
 #fim dos terminais do tipo E (express„o extra)
 #inÌcio dos terminais do tipo N (nome)
+=======
+#fim dos terminais do tipo E (express√£o extra)
+#in√≠cio dos terminais do tipo N (nome)
+>>>>>>> origin/master
 [ USERNAME. ]
 #fim dos terminais do tipo N (nome)
-#inÌcio dos terminais do tipo EV (express„o verbo)
+#in√≠cio dos terminais do tipo EV (express√£o verbo)
 [ Como diria ] 
-#fim dos terminais do tipo EV (express„o verbo)
-#inÌcio dos terminais do tipo P (personagem)
+#fim dos terminais do tipo EV (express√£o verbo)
+#in√≠cio dos terminais do tipo P (personagem)
 [ Martin Luther King: ]
 [ Albert Einstein: ]
 [ Indiana Jones: ]
@@ -25,10 +30,10 @@ Terminais
 [ Clarice Lispector: ]
 [ a minha avoh: ]
 #fim dos terminais do tipo P (personagem)
-#inÌcio dos terminais do tipo PE (personagem especial)
+#in√≠cio dos terminais do tipo PE (personagem especial)
 [ Chewbacca: ]
 #fim dos terminais do tipo PE (personagem especial)
-#inÌcio dos terminais do tipo F1 (primeira frase)
+#in√≠cio dos terminais do tipo F1 (primeira frase)
 [ Nao se preocupe se as coisas nao estao indo como voce esperava, ]
 [ Oportunidades nao surgem. Eh voce quem as cria, ]
 [ Todos os seus sonhos podem se tornar realidade se voce tem coragem para persegui-los, ]
@@ -45,23 +50,23 @@ Terminais
 [ Voce precisa fazer aquilo que pensa que nao eh capaz de fazer, ]
 [ Tudo o que um sonho precisa para ser realizado eh alguem que acredite que ele possa ser realizado, ]
 #fim dos terminais do tipo F1 (primeira frase)
-#inÌcio dos terminais do tipo F2 (segunda frase)
+#in√≠cio dos terminais do tipo F2 (segunda frase)
 [ ao infinito e alem. ]
 [ na duvida, vai e mete o louco. ]
 [ se der medo, vai com medo mesmo. ]
-[ tudo seria facil, se n„o fossem as dificuldades. ]
+[ tudo seria facil, se n√£o fossem as dificuldades. ]
 [ continue a nadar. ] 
 [ que a forca esteja com voce. ]
 [ nunca desista de seu sonho. Se ele acabou em uma padaria, procure em outra. ] 
 #fim dos terminais do tipo F2 (segunda frase)
-#inÌcio dos terminais do tipo FE (frase especial)
+#in√≠cio dos terminais do tipo FE (frase especial)
 [ RRRAARRWHHGWWR. ]
 #fim dos terminais do tipo FE (frase especial)
 Variaveis
 [ S ]
 #start
 [ E ]
-#express„o extra
+#express√£o extra
 [ N ]
 #nome
 [ P ]
@@ -69,7 +74,7 @@ Variaveis
 [ PE ]
 #personagem especial
 [ EV ]
-#express„o verbo
+#express√£o verbo
 [ F1 ]
 #primeira frase
 [ F2 ]
@@ -90,19 +95,25 @@ Regras
 [ P2 ] > [ N ] ;0.05
 [ P2 ] > [ N ] [ EV ] [ P ] [ F2 ] ;0.9
 [ P2 ] > [ N ] [ EV ] [ PE ] [ FE ] ;0.05
-#inÌcio dos terminais do tipo E (express„o extra)
+#in√≠cio dos terminais do tipo E (express√£o extra)
 [ E ] > [ Bom dia! ] ;0.2
 [ E ] > [ Boa tarde! ] ;0.2
 [ E ] > [ Boa noite! ] ;0.2
 [ E ] > [ Ola! ] ;0.4
+<<<<<<< HEAD
 #fim dos terminais do tipo E (express„o extra)
 #inÌcio dos terminais do tipo N (nome)
 [ N ] > [ USERNAME. ] ;1
+=======
+#fim dos terminais do tipo E (express√£o extra)
+#in√≠cio dos terminais do tipo N (nome)
+[ N ] > [ <nome>. ] ;1
+>>>>>>> origin/master
 #fim dos terminais do tipo N (nome)
-#inÌcio dos terminais do tipo EV (express„o verbo)
+#in√≠cio dos terminais do tipo EV (express√£o verbo)
 [ EV ] > [ Como diria ] ;1
-#fim dos terminais do tipo EV (express„o verbo)
-#inÌcio dos terminais do tipo P (personagem)
+#fim dos terminais do tipo EV (express√£o verbo)
+#in√≠cio dos terminais do tipo P (personagem)
 [ P ] > [ Martin Luther King: ] ;0.1
 [ P ] > [ Albert Einstein: ] ;0.1
 [ P ] > [ Indiana Jones: ] ;0.2
@@ -112,10 +123,10 @@ Regras
 [ P ] > [ Clarice Lispector: ] ;0.05
 [ P ] > [ a minha avoh: ] ;0.1
 #fim dos terminais do tipo P (personagem)
-#inÌcio dos terminais do tipo PE (personagem especial)
+#in√≠cio dos terminais do tipo PE (personagem especial)
 [ PE ] > [ Chewbacca: ] ;1
 #fim dos terminais do tipo PE (personagem especial)
-#inÌcio dos terminais do tipo F1 (primeira frase)
+#in√≠cio dos terminais do tipo F1 (primeira frase)
 [ F1 ] > [ Nao se preocupe se as coisas nao estao indo como voce esperava, ] ;0.07
 [ F1 ] > [ Oportunidades nao surgem. Eh voce quem as cria, ] ;0.07
 [ F1 ] > [ Todos os seus sonhos podem se tornar realidade se voce tem coragem para persegui-los, ] ;0.07
@@ -132,15 +143,15 @@ Regras
 [ F1 ] > [ Voce precisa fazer aquilo que pensa que nao eh capaz de fazer, ] ;0.07
 [ F1 ] > [ Tudo o que um sonho precisa para ser realizado eh alguem que acredite que ele possa ser realizado, ] ;0.07
 #fim dos terminais do tipo F1 (primeira frase)
-#inÌcio dos terminais do tipo F2 (segunda frase)
+#in√≠cio dos terminais do tipo F2 (segunda frase)
 [ F2 ] > [ ao infinito e alem. ] ;0.2
 [ F2 ] > [ na duvida, vai e mete o louco. ] ;0.15
 [ F2 ] > [ se der medo, vai com medo mesmo. ] ;0.15
-[ F2 ] > [ tudo seria facil, se n„o fossem as dificuldades. ] ;0.1
+[ F2 ] > [ tudo seria facil, se n√£o fossem as dificuldades. ] ;0.1
 [ F2 ] > [ continue a nadar. ] ;0.1
 [ F2 ] > [ que a forca esteja com voce. ] ;0.2
 [ F2 ] > [ nunca desista de seu sonho. Se ele acabou em uma padaria, procure em outra. ] ;0.1
 #fim dos terminais do tipo F2 (segunda frase)
-#inÌcio dos terminais do tipo FE (frase especial)
+#in√≠cio dos terminais do tipo FE (frase especial)
 [ FE ] > [ RRRAARRWHHGWWR. ] ;1
 #fim dos terminais do tipo FE (frase especial)
