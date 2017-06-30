@@ -10,7 +10,7 @@ Terminais
 [ Ola! ]
 #fim dos terminais do tipo E (expressão extra)
 #início dos terminais do tipo N (nome)
-[ <nome>. ]
+[ USERNAME. ]
 #fim dos terminais do tipo N (nome)
 #início dos terminais do tipo EV (expressão verbo)
 [ Como diria ] 
@@ -97,7 +97,7 @@ Regras
 [ E ] > [ Ola! ] ;0.4
 #fim dos terminais do tipo E (expressão extra)
 #início dos terminais do tipo N (nome)
-[ N ] > [ <nome>. ] ;1
+[ N ] > [ USERNAME. ] ;1
 #fim dos terminais do tipo N (nome)
 #início dos terminais do tipo EV (expressão verbo)
 [ EV ] > [ Como diria ] ;1

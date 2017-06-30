@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 import re
 from input import *
 import os
@@ -240,7 +241,7 @@ def mainFunction():
     states.append(State(0,[]))
     recognizationPhaseTwo(states, firstVar, unknownState)
     offlinePhrase = phrase
-    print((offlinePhrase.replace(" <nome>","")).replace(",.",".") )
+    print((offlinePhrase.replace(" USERNAME","")).replace(",.",".") )
 
 if __name__ == '__main__':
     mainFunction()
